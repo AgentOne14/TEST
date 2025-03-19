@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ฟอร์มยืม-คืน ครุภัณฑ์</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+        }
+        form {
+            max-width: 500px;
+ 		background: linear-gradient(135deg, #ffffff, #e3f2fd);
+            padding: 30px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.5s ease-in-out;
+        }
+ 		@keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+         input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            border: 2px solid #90caf9;
+            border-radius: 8px;
+            background: #f3faff;
+            transition: 0.3s;
+        }
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .select-button {
+            background-color: #007bff;
+        }
+        .select-button:hover {
+            background-color: #0056b3;
+        }
+        #selected-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .selected-item {
+            background-color: #e1f5fe;
+            padding: 5px 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .selected-item img {
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+        }
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding-top: 50px;
+        }
+        .modal-content {
+            background-color: white;
+            margin: auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: red;
+        }
+        .item-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+        .item-option {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            text-align: center;
+            width: 150px;
+            transition: 0.3s;
+        }
+        .item-option img {
+            width: 100px;
+            height: 100px;
+        }
+        .item-option:hover {
+            background-color: #d0e9ff;
+            transform: scale(1.05);
+        }
+
+	    .item-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    max-height: 400px; /* กำหนดความสูงสูงสุด */
+    overflow-y: auto; /* เลื่อนขึ้นลงได้เมื่อไอเทมเยอะ */
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.selected-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.selected-item img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.selected-item button {
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+.selected-item button:hover {
+    background: darkred;
+}
+
+/* ปรับแต่ง Scrollbar (สำหรับ Chrome & Edge) */
+.item-container::-webkit-scrollbar {
+    width: 8px;
+}
+.item-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+}
+.item-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+}
+
+    </style>
+</head>
+<body>
+
+<h2 style="text-align: center;">ฟอร์มยืม-คืน ครุภัณฑ์</h2>
+<form id="dataForm">
+
+    <label for="name">ชื่อนาม-สกุล:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="student_id">รหัสนักศึกษา:</label>
+    <input type="text" id="student_id" name="student_id" required>
+
+    <label for="date_time_borrow">วันที่ยืม:</label>
+    <input type="datetime-local" id="date_time_borrow" name="date_time_borrow" required>
+
+    <label for="date_time_return">วันที่คืน:</label>
+    <input type="datetime-local" id="date_time_return" name="date_time_return" required>
+
+    <label for="purpose">วัตถุประสงค์การใช้งาน:</label>
+    <textarea id="purpose" name="purpose" rows="4" required></textarea>
+
+    <label for="subject">รายวิชา:</label>
+    <input type="text" id="subject" name="subject" required>
+
+    <label for="instructor">ผู้สอน:</label>
+    <input type="text" id="instructor" name="instructor" required>
+
+    <label for="room">เลือกห้อง:</label>
+    <select id="room" onchange="updateItems()" required>
+        <option value="">-- เลือกห้อง --</option>
+        <option value="ห้อง GM204">ห้อง GM204</option>
+        <option value="ห้อง GM201">ห้อง GM201</option>
+        <option value="ห้อง GM116">ห้อง GM116</option>
+	    <option value="ห้อง GM111">ห้อง GM111</option>
+        <option value="ห้อง GM202">ห้อง GM202</option>
+        <option value="ห้อง3D">ห้อง3D</option>
+    </select>
+
+    <label>เลือกครุภัฑณ์:</label>
+    <button type="button" class="select-button" onclick="openItemModal()">เลือกครุภัฑณ์</button>
+    <div id="selected-items">ยังไม่ได้เลือกครุภัฑณ์</div>
+
+    <button type="submit">ส่งข้อมูล</button>
+</form>
+
+<!-- Modal เลือกไอเทม -->
+<div id="itemModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeItemModal()">&times;</span>
+        <h2>เลือกครุภัฑณ์</h2>
+        <div id="item-container" class="item-container"></div>
+    </div>
+</div>
+
+<script>
+    function closeItemModal() {
+        document.getElementById("itemModal").style.display = "none";
+    }
+</script>
+
+<script>
+    let selectedItems = [];
+
+    const itemsByRoom = {
+        "ห้อง GM204": [
+            { name: "711000601956005 เก้าอี้เอนกประสงค์ แบบที่ 2", image: "https://drive.google.com/file/d/1Rkaw-Os2x-fZjw2FvC4jIxUgAk25K-wP/view?usp=drive_link" }, 
+  { name: "653002200255001 เครื่องชั่งน้ำหนักและวิเคราะห์ไขมัน", image: "smartboard.jpg" },
+  { name: "651503600254001 เครื่องตรวจคลื่นไฟฟ้าหัวใจแบบพกพา (Personal ECG Re)", image: "smartboard.jpg" },
+  { name: "651503600254002 เครื่องตรวจคลื่นไฟฟ้าหัวใจแบบพกพา (Personal ECG Re)", image: "smartboard.jpg" },
+  { name: "651504200266001 เครื่องตรวจแลคเตทปลายนิ้ว", image: "เครื่องตรวจแลคเตทปลายนิ้ว.jpg" },
+  { name: "651504200266002 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266003 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266004 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266005 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266006 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266007 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266008 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266009 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266010 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "651504200266011 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "smartboard.jpg" },
+  { name: "65150700002661000001 เครื่องทดสอบการทรงตัวและฝึกการทรงตัวแบบเคลื่อนย้าย", image: "smartboard.jpg" },
+  { name: "653000402666001 เครื่องทดสอบระบบพลังงานแบบลู่วิ่งไฟฟ้าพร้อมระบบควบคุม", image: "smartboard.jpg" },
+  { name: "653000402358001 เครื่องทดสอบสมรรถภาพของพลังกล้ามเนื้อและการกระโดด", image: "smartboard.jpg" },
+  { name: "773000800954001 เครื่องเล่น DVD", image: "smartboard.jpg" },
+  { name: "651507000154001 เครื่องวัดการทรงตัว", image: "smartboard.jpg" },
+  { name: "651503800254001 เครื่องวัดกำลังหลังและขาแบบเข็ม", image: "smartboard.jpg" },
+  { name: "651503800254002 เครื่องวัดกำลังหลังและขาแบบตัวเลข", image: "smartboard.jpg" },
+  { name: "651504200155001 เครื่องวัดไขมันใต้ผิวหนัง (Skinfold Caliper)", image: "smartboard.jpg" },
+  { name: "651504700355001 เครื่องวัดความจุปอดแบบพกพา", image: "smartboard.jpg" },
+  { name: "651502100363001 เครื่องวัดความดันแบบปรอท Sphygmomanometer", image: "smartboard.jpg" },
+  { name: "651502100363002 เครื่องวัดความดันแบบปรอท Sphygmomanometer", image: "smartboard.jpg" },
+  { name: "651502200651002 เครื่องวัดความดันโลหิตชนิดหัวนาฬิกา", image: "smartboard.jpg" },
+  { name: "651502200357001 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "smartboard.jpg" },
+  { name: "651502200357002 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "smartboard.jpg" },
+  { name: "651502700163009 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "smartboard.jpg" },
+  { name: "651502700163010 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "smartboard.jpg" },
+  { name: "651502700163011 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "smartboard.jpg" },
+  { name: "651502100356004 เครื่องวัดความดันโลหิต แบบปรอทแบบตั้งโต๊ะ", image: "smartboard.jpg" },
+  { name: "651502100356005 เครื่องวัดความดันโลหิต แบบปรอทแบบตั้งโต๊ะ", image: "smartboard.jpg" },
+  { name: "651503700454001 เครื่องวัดความอ่อนตัวด้านหน้าแบบตัวเลข", image: "smartboard.jpg" },
+  { name: "651503700454001 เครื่องวัดความอ่อนตัวด้านหน้าแบบธรรมดา", image: "smartboard.jpg" },
+  { name: "651503700554001 เครื่องวัดความอ่อนตัวด้านหลังแบบตัวเลข", image: "smartboard.jpg" },
+  { name: "651502100162001 เครื่องวัดปฏิกิริยาตอบสนอง ระหว่างตากับมือ", image: "smartboard.jpg" },
+  { name: "651503900365001 เครื่องวัดผลการตอบสนองกลับทางสรีรวิทยาและจิตวิทยา", image: "smartboard.jpg" },
+  { name: "651503700254001 เครื่องวัดแรงบีบมือแบบเข็ม", image: "smartboard.jpg" },
+  { name: "651503700254002 เครื่องวัดแรงบีบมือแบบตัวเลข", image: "smartboard.jpg" },
+  { name: "711001405052004 ตู้เก็บสารเคมีและผลิตภัณฑ์ยาสำเร็จรูป", image: "smartboard.jpg" },
+  { name: "711001400656008 ตู้เหล็ก 2 บาน", image: "smartboard.jpg" },
+  { name: "711001400654051 ตู้เหล็กบานทึบ", image: "ตู้เหล็กบานทึบ.jpg" },
+  { name: "653000200156001 เปลสนาม", image: "smartboard.jpg" },
+  { name: "744001504854001 โปรแกรมประมวลผลการทดสอบสมรรถภาพ", image: "smartboard.jpg" }
+        ],
+        "ห้อง GM201": [
+            { name: "ลำโพง", image: "speaker.jpg" },
+            { name: "จอทีวี", image: "tv.jpg" },
+            { name: "เครื่องเสียง", image: "sound_system.jpg" },
+            { name: "ไฟส่องเวที", image: "stage_light.jpg" }
+        ],
+        "ห้อง GM116": [
+            { name: "คอมพิวเตอร์", image: "computer.jpg" },
+            { name: "เครื่องพิมพ์", image: "printer.jpg" },
+            { name: "เมาส์ไร้สาย", image: "wireless_mouse.jpg" },
+            { name: "คีย์บอร์ดไร้สาย", image: "wireless_keyboard.jpg" }
+        ],
+	  
+	  "ห้อง GM111": [
+            { name: "คอมพิวเตอร์", image: "computer.jpg" },
+            { name: "เครื่องพิมพ์", image: "printer.jpg" },
+            { name: "เมาส์ไร้สาย", image: "wireless_mouse.jpg" },
+            { name: "คีย์บอร์ดไร้สาย", image: "wireless_keyboard.jpg" }
+        ],
+
+	   "ห้อง GM202": [
+            { name: "คอมพิวเตอร์", image: "computer.jpg" },
+            { name: "เครื่องพิมพ์", image: "printer.jpg" },
+            { name: "เมาส์ไร้สาย", image: "wireless_mouse.jpg" },
+            { name: "คีย์บอร์ดไร้สาย", image: "wireless_keyboard.jpg" }
+        ],
+
+	   "ห้อง3D": [
+            { name: "คอมพิวเตอร์", image: "computer.jpg" },
+            { name: "เครื่องพิมพ์", image: "printer.jpg" },
+            { name: "เมาส์ไร้สาย", image: "wireless_mouse.jpg" },
+            { name: "คีย์บอร์ดไร้สาย", image: "wireless_keyboard.jpg" }
+        ]
+    };
+
+  function openItemModal() {
+            const room = document.getElementById("room").value;
+            if (!room) {
+                alert("กรุณาเลือกห้องก่อน!");
+                return;
+            }
+
+            const container = document.getElementById("item-container");
+            container.innerHTML = "";
+
+            itemsByRoom[room].forEach(item => {
+                const div = document.createElement("div");
+                div.classList.add("item-option");
+                div.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
+                div.onclick = () => toggleItem(item);
+                container.appendChild(div);
+            });
+
+            document.getElementById("itemModal").style.display = "block";
+        }
+
+        function closeItemModal() {
+            document.getElementById("itemModal").style.display = "none";
+        }
+
+        function toggleItem(item) {
+            const index = selectedItems.findIndex(i => i.name === item.name);
+
+            if (index === -1) {
+                selectedItems.push(item);
+            } else {
+                selectedItems.splice(index, 1);
+            }
+
+            displaySelectedItems();
+        }
+
+        function removeItem(index) {
+            selectedItems.splice(index, 1);
+            displaySelectedItems();
+        }
+
+        function displaySelectedItems() {
+            const container = document.getElementById("selected-items");
+            container.innerHTML = "";
+
+            if (selectedItems.length === 0) {
+                container.innerText = "ยังไม่ได้เลือกไอเทม";
+                return;
+            }
+
+            selectedItems.forEach((item, index) => {
+                const div = document.createElement("div");
+                div.classList.add("selected-item");
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <p>${item.name}</p>
+                    <button onclick="removeItem(${index})">❌</button>
+                `;
+                container.appendChild(div);
+            });
+        }
+    </script>
+
+
+	<script>
+   document.getElementById("dataForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const formData = {
+        name: document.getElementById("name").value,
+        student_id: document.getElementById("student_id").value,
+        date_time_borrow: document.getElementById("date_time_borrow").value,
+        date_time_return: document.getElementById("date_time_return").value,
+        purpose: document.getElementById("purpose").value,
+        subject: document.getElementById("subject").value,
+        instructor: document.getElementById("instructor").value,
+        room: document.getElementById("room").value,
+        selected_items: selectedItems.map(item => item.name) // ส่งเฉพาะชื่อไอเทม
+    };
+
+    fetch("https://script.google.com/macros/s/AKfycbyc1kUaHGMWQ5h91D3PF-5bmN0HHZ32Z_34NTV20XXkS5uTVyiGsgeI9rk4YgSogg-SSg/exec", {  // ใส่ URL ที่ได้จาก Google Apps Script
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData)
+    }).then(() => {
+        alert("ส่งข้อมูลสำเร็จ!");
+        document.getElementById("dataForm").reset();
+        selectedItems = [];
+        displaySelectedItems();
+    }).catch(error => console.error("Error:", error));
+});
+
+</script>
+
+</body>
+</html>

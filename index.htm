@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เลือกการดำเนินการ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: "Bebas Neue", sans-serif;
+            background: linear-gradient(-45deg, #003366, #0055A4, #00A86B, #57C84D);
+            background-size: 400% 400%;
+            animation: gradientAnimation 8s infinite ease-in-out;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 40px;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .option {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 260px;
+            padding: 20px;
+            margin: 20px;
+            font-size: 26px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: white;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .option::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .borrow {
+            background: linear-gradient(45deg, #FF4500, #FF8C00);
+            border-bottom: 4px solid #D63400;
+        }
+
+        .return {
+            background: linear-gradient(45deg, #1E90FF, #00BFFF);
+            border-bottom: 4px solid #0073E6;
+        }
+
+        .option:hover {
+            transform: scale(1.15);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .option:hover::after {
+            opacity: 1;
+        }
+
+        .icon {
+            font-size: 30px;
+            margin-right: 10px;
+        }
+
+    </style>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>🏆 ระบบยืมคืนอุปกรณ์กีฬาและสุขภาพ 🏃‍♂️</h1>
+        <div class="option borrow" onclick="location.href='ฟอมครุภัณฑ์.html'">
+            <span class="icon"><i class="fas fa-dumbbell"></i></span> ยืมครุภัณฑ์
+        </div>
+        <div class="option return" onclick="location.href='ฟรอมวัสดุ.html'">
+            <span class="icon"><i class="fas fa-volleyball-ball"></i></span> ยืมวัสดุ
+        </div>
+    </div>
+</body>
+</html>
