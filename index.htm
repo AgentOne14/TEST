@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ระบบยืมคืนวัสดุ-ครุภัณฑ์</title>
+    <title>เลือกการดำเนินการ</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 
@@ -27,25 +27,32 @@
         }
 
         .container {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
             padding: 50px;
             border-radius: 20px;
             box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         h1 {
-            font-size: 40px;
-            letter-spacing: 2px;
+            font-size: 42px;
+            letter-spacing: 3px;
             margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
+        }
+
+        h1:hover {
+            transform: scale(1.05);
+            text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.6);
         }
 
         .option {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 260px;
+            width: 280px;
             padding: 20px;
-            margin: 20px;
+            margin: 15px;
             font-size: 26px;
             font-weight: bold;
             text-transform: uppercase;
@@ -80,8 +87,13 @@
             border-bottom: 4px solid #0073E6;
         }
 
+        .lab {
+            background: linear-gradient(45deg, #8E44AD, #9B59B6);
+            border-bottom: 4px solid #6C3483;
+        }
+
         .option:hover {
-            transform: scale(1.15);
+            transform: translateY(-3px);
             box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
         }
 
@@ -91,7 +103,7 @@
 
         .icon {
             font-size: 30px;
-            margin-right: 10px;
+            margin-right: 12px;
         }
 
     </style>
@@ -99,12 +111,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>🏆 ระบบยืมคืนอุปกรณ์วิทยาศาสตร์การกีฬาและสุขภาพ 🏃‍♂️</h1>
+        <h1>🏆 ระบบยืมคืนอุปกรณ์กีฬาและสุขภาพ 🏃‍♂️</h1>
         <div class="option borrow" onclick="location.href='ฟอมครุภัณฑ์.html'">
             <span class="icon"><i class="fas fa-dumbbell"></i></span> ยืมครุภัณฑ์
         </div>
         <div class="option return" onclick="location.href='ฟรอมวัสดุ.html'">
             <span class="icon"><i class="fas fa-volleyball-ball"></i></span> ยืมวัสดุ
+        </div>
+        <div class="option lab" onclick="window.open('https://docs.google.com/forms/d/1VfOksVgVkleya78S_4F5L9F7h38OzGBcxs7PJ0rbUZY/viewform', '_blank')">
+            <span class="icon"><i class="fas fa-chalkboard-teacher"></i></span> จองห้องปฏิบัติการ
         </div>
     </div>
 </body>
