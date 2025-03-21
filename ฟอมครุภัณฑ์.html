@@ -183,7 +183,38 @@
 .item-container::-webkit-scrollbar-thumb:hover {
     background-color: #555;
 }
+	    
+#loadingOverlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    font-size: 20px;
+    z-index: 9999;
+}
 
+.spinner {
+    border: 6px solid rgba(255, 255, 255, 0.3);
+    border-top: 6px solid white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+	    
     </style>
 </head>
 <body>
@@ -529,10 +560,7 @@
                 container.appendChild(div);
             });
         }
-    </script>
-
-
-	<script>
+   <script>
    document.getElementById("dataForm").addEventListener("submit", function(event) {
     event.preventDefault();
 
@@ -548,7 +576,10 @@
         selected_items: selectedItems.map(item => item.name) // ส่งเฉพาะชื่อไอเทม
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbyc1kUaHGMWQ5h91D3PF-5bmN0HHZ32Z_34NTV20XXkS5uTVyiGsgeI9rk4YgSogg-SSg/exec", {  // ใส่ URL ที่ได้จาก Google Apps Script
+    // แสดงหน้าโหลด
+    document.getElementById("loadingOverlay").style.display = "flex";
+
+    fetch("https://script.google.com/macros/s/AKfycbyc1kUaHGMWQ5h91D3PF-5bmN0HHZ32Z_34NTV20XXkS5uTVyiGsgeI9rk4YgSogg-SSg/exec", {  
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
@@ -558,10 +589,20 @@
         document.getElementById("dataForm").reset();
         selectedItems = [];
         displaySelectedItems();
-    }).catch(error => console.error("Error:", error));
+    }).catch(error => {
+        console.error("Error:", error);
+    }).finally(() => {
+        // ซ่อนหน้าโหลด ไม่ว่าจะสำเร็จหรือไม่
+        document.getElementById("loadingOverlay").style.display = "none";
+    });
 });
 
 </script>
+	
+<div id="loadingOverlay" style="display: none;">
+    <div class="spinner"></div>
+    <p>กำลังส่งข้อมูล...</p>
+</div>
 
 </body>
 </html>
