@@ -167,6 +167,34 @@
         function getStatusText(status) {
             return status === "approved" ? "✅ อนุมัติแล้ว" : status === "rejected" ? "❌ ไม่อนุมัติ" : "⏳ รออนุมัติ";
         }
+        function updateBookingStatus(studentId, newStatus, reason = "") {
+    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    let booking = bookings.find(b => b.studentId === studentId);
+    if (booking) {
+        booking.status = newStatus;
+        booking.reason = reason;
+        localStorage.setItem("bookings", JSON.stringify(bookings));
+
+        // ส่งข้อมูลไป Google Apps Script
+        fetch("https://script.google.com/macros/s/your_script_id/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                studentId: booking.studentId,
+                name: booking.name,
+                email: booking.email,
+                date: booking.date,
+                startTime: booking.startTime,
+                endTime: booking.endTime,
+                status: newStatus,
+                reason: reason
+            })
+        })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error("Error:", error));
+    }
+}
     </script>
 
 </body>
