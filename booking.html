@@ -174,7 +174,7 @@ function rejectBooking(studentId) {
         booking.reason = reason;
         localStorage.setItem("bookings", JSON.stringify(bookings));
 
-        let scriptURL = "https://script.google.com/macros/s/your_script_id/exec";
+        let scriptURL = "https://script.google.com/macros/s/AKfycbyh1vPAB5T7zymjHjSrpLYyhQmDVsLmJ4w6iBO_992LCSQZ6T7AR-OywNsJUvz_KM3Avw/exec";
 
         fetch(scriptURL, {
             method: "POST",
