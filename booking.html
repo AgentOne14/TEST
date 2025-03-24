@@ -174,11 +174,12 @@ function rejectBooking(studentId) {
         booking.reason = reason;
         localStorage.setItem("bookings", JSON.stringify(bookings));
 
-        let scriptURL = "https://script.google.com/macros/s/AKfycbyOuZzyOrG1e807NRK6UnnrSAy4uKRwpBShPxGVpLifh7RSICgN8LKKeRKmNWWC-cRCtg/exec";
+        let scriptURL = "https://script.google.com/macros/s/your_script_id/exec";
 
         fetch(scriptURL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            mode: "cors", // ✅ อนุญาตให้เรียก API ผ่าน CORS
             body: JSON.stringify({
                 studentId: booking.studentId,
                 name: booking.name,
@@ -202,6 +203,7 @@ function rejectBooking(studentId) {
         });
     }
 }
+
     </script>
 
 </body>
