@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการจองห้อง</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        .room-section { width: 80%; margin: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+        h2 { background: #007bff; color: white; padding: 10px; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { padding: 10px; border: 1px solid #ddd; text-align: center; }
+        th { background: #007bff; color: white; }
+        button { padding: 6px 10px; cursor: pointer; border-radius: 4px; border: none; }
+        .btn-delete { background: red; color: white; }
+        .btn-delete:hover { background: darkred; }
+        .btn-approve { background: green; color: white; }
+        .btn-approve:hover { background: darkgreen; }
+        .btn-reject { background: orange; color: white; }
+        .btn-reject:hover { background: darkorange; }
+        .btn-delete-all { background: #ff8800; color: white; margin-bottom: 15px; }
+        .btn-delete-all:hover { background: #cc6f00; }
+
+        /* สีของสถานะ */
+        .pending { background: yellow; }
+        .approved { background: lightgreen; }
+        .rejected { background: lightcoral; }
+    </style>
+</head>
+<body>
+
+    <h1>📜 รายการจองห้อง</h1>
+
+    <button class="btn-delete-all" onclick="deleteAllBookings()">❌ ลบทั้งหมด</button>
+
+    <div id="bookingContainer"></div>
+    <button onclick="window.location.href='Calendar.html'">⬅️ กลับไปปฏิทิน</button>
+
+    <script>
+        function loadBookings() {
+            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+            let bookingContainer = document.getElementById("bookingContainer");
+            bookingContainer.innerHTML = "";
+
+            if (bookings.length === 0) {
+                bookingContainer.innerHTML = "<p>ไม่มีการจอง</p>";
+                return;
+            }
+
+            let groupedBookings = {};
+            bookings.forEach((booking, index) => {
+                if (!groupedBookings[booking.room]) {
+                    groupedBookings[booking.room] = [];
+                }
+                groupedBookings[booking.room].push({ ...booking, index });
+            });
+
+            Object.keys(groupedBookings).forEach(room => {
+                let section = document.createElement("div");
+                section.className = "room-section";
+                section.innerHTML = `<h2>🏠 ห้อง: ${room}</h2>`;
+
+                let table = document.createElement("table");
+                table.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th>ชื่อ</th>
+                            <th>รหัส</th>
+                            <th>อีเมล</th>
+                            <th>เบอร์โทร</th>
+                            <th>วัตถุประสงค์</th>
+                            <th>วันที่</th>
+                            <th>เวลาเข้า</th>
+                            <th>เวลาออก</th>
+                            <th>สถานะ</th>
+                            <th>อนุมัติ</th>
+                            <th>ไม่อนุมัติ</th>
+                            <th>ลบ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${groupedBookings[room].map(booking => `
+                            <tr class="${getStatusClass(booking.status)}">
+                                <td>${booking.name}</td>
+                                <td>${booking.studentId}</td>
+                                <td>${booking.email}</td>
+                                <td>${booking.phone}</td>
+                                <td>${booking.purpose}</td>
+                                <td>${formatDate(booking.date)}</td>
+                                <td>${formatTime(booking.startTime)}</td>
+                                <td>${formatTime(booking.endTime)}</td>
+                                <td>${getStatusText(booking.status)}</td>
+                                <td><button class="btn-approve" onclick="approveBooking(${booking.index})">✅ อนุมัติ</button></td>
+                                <td><button class="btn-reject" onclick="rejectBooking(${booking.index})">❌ ไม่อนุมัติ</button></td>
+                                <td><button class="btn-delete" onclick="deleteBooking(${booking.index})">🗑️</button></td>
+                            </tr>
+                        `).join("")}
+                    </tbody>
+                `;
+
+                section.appendChild(table);
+                bookingContainer.appendChild(section);
+            });
+        }
+
+        function formatTime(time) {
+            if (!time) return "-";
+            let [hour, minute] = time.split(":");
+            return `${hour}:${minute} น.`; 
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return "-";
+            let date = new Date(dateStr);
+            return date.toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" });
+        }
+
+        function deleteBooking(index) {
+            if (confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบการจองนี้?")) {
+                let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+                bookings.splice(index, 1);
+                localStorage.setItem("bookings", JSON.stringify(bookings));
+                loadBookings();
+            }
+        }
+
+        function deleteAllBookings() {
+            if (confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบการจองทั้งหมด?")) {
+                localStorage.removeItem("bookings");
+                loadBookings();
+            }
+        }
+
+        function approveBooking(index) {
+            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+            if (bookings[index]) {
+                bookings[index].status = "approved";
+                localStorage.setItem("bookings", JSON.stringify(bookings));
+                loadBookings();
+            }
+        }
+
+        function rejectBooking(index) {
+            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+            if (bookings[index]) {
+                bookings[index].status = "rejected";
+                localStorage.setItem("bookings", JSON.stringify(bookings));
+                loadBookings();
+            }
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case "approved": return "approved";
+                case "rejected": return "rejected";
+                default: return "pending";
+            }
+        }
+
+        function getStatusText(status) {
+            switch (status) {
+                case "approved": return "✅ อนุมัติแล้ว";
+                case "rejected": return "❌ ไม่อนุมัติ";
+                default: return "⏳ รออนุมัติ";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", loadBookings);
+    </script>
+
+</body>
+</html>
