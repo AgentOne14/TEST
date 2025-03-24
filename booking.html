@@ -146,17 +146,19 @@
             }
         }
 
-      function approveBooking(studentId) {
-    updateBookingStatus(studentId, "approved");
-}
+        function approveBooking(studentId) {
+            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+            bookings = bookings.map(b => b.studentId === studentId ? { ...b, status: "approved" } : b);
+            localStorage.setItem("bookings", JSON.stringify(bookings));
+            loadBookings();
+        }
 
-function rejectBooking(studentId) {
-    let reason = prompt("กรุณาระบุเหตุผลที่ไม่อนุมัติ:");
-    if (reason !== null) {
-        updateBookingStatus(studentId, "rejected", reason);
-    }
-}
-
+        function rejectBooking(studentId) {
+            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+            bookings = bookings.map(b => b.studentId === studentId ? { ...b, status: "rejected" } : b);
+            localStorage.setItem("bookings", JSON.stringify(bookings));
+            loadBookings();
+        }
 
         function getStatusClass(status) {
             return status === "approved" ? "approved" : status === "rejected" ? "rejected" : "pending";
@@ -165,45 +167,6 @@ function rejectBooking(studentId) {
         function getStatusText(status) {
             return status === "approved" ? "✅ อนุมัติแล้ว" : status === "rejected" ? "❌ ไม่อนุมัติ" : "⏳ รออนุมัติ";
         }
-       function updateBookingStatus(studentId, newStatus, reason = "") {
-    let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    let booking = bookings.find(b => b.studentId === studentId);
-    
-    if (booking) {
-        booking.status = newStatus;
-        booking.reason = reason;
-        localStorage.setItem("bookings", JSON.stringify(bookings));
-
-        let scriptURL = "https://script.google.com/macros/s/AKfycbyh1vPAB5T7zymjHjSrpLYyhQmDVsLmJ4w6iBO_992LCSQZ6T7AR-OywNsJUvz_KM3Avw/exec";
-
-        fetch(scriptURL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            mode: "cors", // ✅ อนุญาตให้เรียก API ผ่าน CORS
-            body: JSON.stringify({
-                studentId: booking.studentId,
-                name: booking.name,
-                email: booking.email,
-                date: booking.date,
-                startTime: booking.startTime,
-                endTime: booking.endTime,
-                status: newStatus,
-                reason: reason
-            })
-        })
-        .then(response => response.text())
-        .then(data => {
-            console.log("Response:", data);
-            alert("✅ สถานะการจองถูกอัปเดตเรียบร้อย!");
-            loadBookings();
-        })
-        .catch(error => {
-            console.error("Fetch Error:", error);
-            alert("❌ ไม่สามารถอัปเดตสถานะได้ กรุณาลองใหม่อีกครั้ง!");
-        });
-    }
-}
-
     </script>
 
 </body>
