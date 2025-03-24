@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
+        .login-box { max-width: 350px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <div class="login-box">
+        <h2>🔐 เข้าสู่ระบบ</h2>
+        <input type="text" id="username" placeholder="ชื่อผู้ใช้" required>
+        <input type="password" id="password" placeholder="รหัสผ่าน" required>
+        <button onclick="login()">✅ เข้าสู่ระบบ</button>
+    </div>
+
+    <script>
+        function login() {
+            let username = document.getElementById("username").value.trim();
+            let password = document.getElementById("password").value.trim();
+
+            if (username === "wanchaloem" && password === "1234") {  // 🔹 ตั้งค่า User/Pass เริ่มต้น
+                localStorage.setItem("isLoggedIn", "true");  // 🔹 บันทึกสถานะล็อกอิน
+                alert("✅ เข้าสู่ระบบสำเร็จ!");
+                window.location.href = "booking.html";  // 🔹 กลับไปที่หน้าหลัก
+            } else {
+                alert("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!");
+            }
+        }
+    </script>
+
+</body>
+</html>

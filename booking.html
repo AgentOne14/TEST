@@ -37,6 +37,15 @@
     <button onclick="window.location.href='Calendar.html'">⬅️ กลับไปปฏิทิน</button>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem("isLoggedIn") !== "true") {
+                alert("⚠️ กรุณาเข้าสู่ระบบก่อนเข้าใช้!");
+                window.location.href = "login.html"; 
+                return;
+            }
+            loadBookings();
+        });
+
         function loadBookings() {
             let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
             let bookingContainer = document.getElementById("bookingContainer");
@@ -48,11 +57,11 @@
             }
 
             let groupedBookings = {};
-            bookings.forEach((booking, index) => {
+            bookings.forEach((booking) => {
                 if (!groupedBookings[booking.room]) {
                     groupedBookings[booking.room] = [];
                 }
-                groupedBookings[booking.room].push({ ...booking, index });
+                groupedBookings[booking.room].push(booking);
             });
 
             Object.keys(groupedBookings).forEach(room => {
@@ -79,7 +88,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        ${groupedBookings[room].map(booking => `
+                        ${groupedBookings[room].map((booking, index) => `
                             <tr class="${getStatusClass(booking.status)}">
                                 <td>${booking.name}</td>
                                 <td>${booking.studentId}</td>
@@ -90,9 +99,9 @@
                                 <td>${formatTime(booking.startTime)}</td>
                                 <td>${formatTime(booking.endTime)}</td>
                                 <td>${getStatusText(booking.status)}</td>
-                                <td><button class="btn-approve" onclick="approveBooking(${booking.index})">✅ อนุมัติ</button></td>
-                                <td><button class="btn-reject" onclick="rejectBooking(${booking.index})">❌ ไม่อนุมัติ</button></td>
-                                <td><button class="btn-delete" onclick="deleteBooking(${booking.index})">🗑️</button></td>
+                                <td><button class="btn-approve" onclick="approveBooking('${booking.studentId}')">✅ อนุมัติ</button></td>
+                                <td><button class="btn-reject" onclick="rejectBooking('${booking.studentId}')">❌ ไม่อนุมัติ</button></td>
+                                <td><button class="btn-delete" onclick="deleteBooking('${booking.studentId}')">🗑️</button></td>
                             </tr>
                         `).join("")}
                     </tbody>
@@ -109,16 +118,22 @@
             return `${hour}:${minute} น.`; 
         }
 
+        function logout() {
+            localStorage.removeItem("isLoggedIn");
+            alert("🔓 ออกจากระบบสำเร็จ!");
+            window.location.href = "login.html";
+        }
+
         function formatDate(dateStr) {
             if (!dateStr) return "-";
             let date = new Date(dateStr);
             return date.toLocaleDateString("th-TH", { year: "numeric", month: "long", day: "numeric" });
         }
 
-        function deleteBooking(index) {
+        function deleteBooking(studentId) {
             if (confirm("⚠️ คุณแน่ใจหรือไม่ว่าต้องการลบการจองนี้?")) {
                 let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-                bookings.splice(index, 1);
+                bookings = bookings.filter(b => b.studentId !== studentId);
                 localStorage.setItem("bookings", JSON.stringify(bookings));
                 loadBookings();
             }
@@ -131,41 +146,27 @@
             }
         }
 
-        function approveBooking(index) {
+        function approveBooking(studentId) {
             let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-            if (bookings[index]) {
-                bookings[index].status = "approved";
-                localStorage.setItem("bookings", JSON.stringify(bookings));
-                loadBookings();
-            }
+            bookings = bookings.map(b => b.studentId === studentId ? { ...b, status: "approved" } : b);
+            localStorage.setItem("bookings", JSON.stringify(bookings));
+            loadBookings();
         }
 
-        function rejectBooking(index) {
+        function rejectBooking(studentId) {
             let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-            if (bookings[index]) {
-                bookings[index].status = "rejected";
-                localStorage.setItem("bookings", JSON.stringify(bookings));
-                loadBookings();
-            }
+            bookings = bookings.map(b => b.studentId === studentId ? { ...b, status: "rejected" } : b);
+            localStorage.setItem("bookings", JSON.stringify(bookings));
+            loadBookings();
         }
 
         function getStatusClass(status) {
-            switch (status) {
-                case "approved": return "approved";
-                case "rejected": return "rejected";
-                default: return "pending";
-            }
+            return status === "approved" ? "approved" : status === "rejected" ? "rejected" : "pending";
         }
 
         function getStatusText(status) {
-            switch (status) {
-                case "approved": return "✅ อนุมัติแล้ว";
-                case "rejected": return "❌ ไม่อนุมัติ";
-                default: return "⏳ รออนุมัติ";
-            }
+            return status === "approved" ? "✅ อนุมัติแล้ว" : status === "rejected" ? "❌ ไม่อนุมัติ" : "⏳ รออนุมัติ";
         }
-
-        document.addEventListener("DOMContentLoaded", loadBookings);
     </script>
 
 </body>
