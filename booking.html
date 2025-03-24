@@ -146,19 +146,17 @@
             }
         }
 
-        function approveBooking(studentId) {
-            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-            bookings = bookings.map(b => b.studentId === studentId ? { ...b, status: "approved" } : b);
-            localStorage.setItem("bookings", JSON.stringify(bookings));
-            loadBookings();
-        }
+      function approveBooking(studentId) {
+    updateBookingStatus(studentId, "approved");
+}
 
-        function rejectBooking(studentId) {
-            let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-            bookings = bookings.map(b => b.studentId === studentId ? { ...b, status: "rejected" } : b);
-            localStorage.setItem("bookings", JSON.stringify(bookings));
-            loadBookings();
-        }
+function rejectBooking(studentId) {
+    let reason = prompt("กรุณาระบุเหตุผลที่ไม่อนุมัติ:");
+    if (reason !== null) {
+        updateBookingStatus(studentId, "rejected", reason);
+    }
+}
+
 
         function getStatusClass(status) {
             return status === "approved" ? "approved" : status === "rejected" ? "rejected" : "pending";
@@ -167,16 +165,18 @@
         function getStatusText(status) {
             return status === "approved" ? "✅ อนุมัติแล้ว" : status === "rejected" ? "❌ ไม่อนุมัติ" : "⏳ รออนุมัติ";
         }
-        function updateBookingStatus(studentId, newStatus, reason = "") {
+       function updateBookingStatus(studentId, newStatus, reason = "") {
     let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
     let booking = bookings.find(b => b.studentId === studentId);
+    
     if (booking) {
         booking.status = newStatus;
         booking.reason = reason;
         localStorage.setItem("bookings", JSON.stringify(bookings));
 
-        // ส่งข้อมูลไป Google Apps Script
-        fetch("https://script.google.com/macros/s/your_script_id/exec", {
+        let scriptURL = "https://script.google.com/macros/s/AKfycbyOuZzyOrG1e807NRK6UnnrSAy4uKRwpBShPxGVpLifh7RSICgN8LKKeRKmNWWC-cRCtg/exec";
+
+        fetch(scriptURL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -191,8 +191,15 @@
             })
         })
         .then(response => response.text())
-        .then(data => console.log(data))
-        .catch(error => console.error("Error:", error));
+        .then(data => {
+            console.log("Response:", data);
+            alert("✅ สถานะการจองถูกอัปเดตเรียบร้อย!");
+            loadBookings();
+        })
+        .catch(error => {
+            console.error("Fetch Error:", error);
+            alert("❌ ไม่สามารถอัปเดตสถานะได้ กรุณาลองใหม่อีกครั้ง!");
+        });
     }
 }
     </script>
