@@ -7,12 +7,14 @@
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
-            background-image: url('https://www.example.com/path-to-your-image.png'); /* ใส่ URL ของรูปภาพสนามบอลที่คุณต้องการใช้ */
+            background-image: url('https://www.example.com/path-to-your-image.png'); /* รูปภาพสนามกีฬาหรืออุปกรณ์กีฬา */
             background-size: cover;
             background-position: center;
             color: white;
             text-align: center;
             padding: 40px;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
 
         h1 {
@@ -21,12 +23,14 @@
             font-weight: bold;
             margin-bottom: 30px;
             text-transform: uppercase;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
         }
 
         p {
             font-size: 1.2rem;
             color: #fff;
             margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
         }
 
         .button {
@@ -40,6 +44,7 @@
             margin: 15px;
             text-align: center;
             transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
         }
 
         .button:hover {
@@ -62,22 +67,54 @@
             align-items: center;
             flex-wrap: wrap;
         }
+
+        /* กรอบและสไตล์ตกแต่งปุ่ม */
+        .container a {
+            border: 2px solid #ff5733;
+            border-radius: 20px;
+            padding: 10px 40px;
+            margin: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+            font-size: 1.3rem;
+        }
+
+        /* ปรับแต่งรูปภาพกีฬาที่เพิ่มมา */
+        .sports-equipment {
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            width: 150px;
+            height: auto;
+        }
+
+        /* ปรับกรอบข้อความ */
+        .message-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+        }
+
     </style>
 </head>
 <body>
-    <h1>เลือกประเภทวัสดุที่ต้องการเบิก-ยืม/h1>
-    
-    <p>คลิกที่ปุ่มด้านล่างเพื่อไปที่ลิงค์ต่างๆ:</p>
-    
+    <img src="https://www.example.com/path-to-your-sports-equipment-image.png" alt="Sports Equipment" class="sports-equipment" /> <!-- รูปภาพอุปกรณ์กีฬา -->
+
+    <div class="message-box">
+        <h1>เลือกประเภทวัสดุที่ต้องการเบิก-ยืม</h1>
+        <p>คลิกที่ปุ่มด้านล่างเพื่อไปที่ลิงค์ต่างๆ:</p>
+    </div>
+
     <div class="container">
         <!-- ลิงค์ที่ 1 -->
         <a href="https://script.google.com/macros/s/AKfycbwdMoRg-0tCsYZVaegowbZo_iwmzUHz5nNShx9_VQFKfdlr6vxZeOozBrkou2ZtetDq/exec" class="button" target="_blank">
-            วัสดุยืม-คืน
+            วัสดุสิ้นเปลือง
         </a>
         
         <!-- ลิงค์ที่ 2 -->
         <a href="https://script.google.com/macros/s/AKfycbyRxtGh0jtBkrmXfA7A8EQULtMQdDHivbdxjleskzBrZnhQwZ_2kxWHSqvWpJFDkGOD/exec" class="button" target="_blank">
-            วัสดุสิ้นเปลือง
+            วัสดุยืม-คืน
         </a>
     </div>
 
