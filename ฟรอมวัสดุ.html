@@ -3,164 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ยืมวัสดุ</title>
+    <title>เชื่อมโยงสองลิ้งค์</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
         body {
-            font-family: "Bebas Neue", sans-serif;
-            text-align: center;
-            background: linear-gradient(-45deg, #2C3E50, #34495E, #1ABC9C, #16A085);
-            background-size: 400% 400%;
-            animation: gradientAnimation 8s infinite ease-in-out;
-            color: white;
+            font-family: 'Sarabun', sans-serif;
             padding: 20px;
         }
-        @keyframes gradientAnimation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        h1 {
+            color: #1D4ED8;
         }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+        .button {
+            background-color: #1D4ED8;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
         }
-        h1 { font-size: 36px; text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3); }
-        label { font-size: 20px; display: block; margin-top: 10px; }
-        input, select, textarea {
-            width: 100%; padding: 10px; margin: 5px 0;
-            font-size: 18px; border-radius: 5px; border: none;
+        .button:hover {
+            background-color: #2563EB;
         }
-        .item { display: flex; justify-content: space-between; align-items: center;
-                background: rgba(255, 255, 255, 0.2); padding: 15px; margin: 10px 0;
-                border-radius: 10px; }
-        .controls { display: flex; align-items: center; }
-        .btn {
-            width: 40px; height: 40px; border: none;
-            font-size: 24px; font-weight: bold; cursor: pointer;
-            color: white; border-radius: 5px; transition: 0.3s;
-        }
-        .btn.minus { background: #E74C3C; }
-        .btn.plus { background: #27AE60; }
-        .btn:hover { opacity: 0.8; }
-        .quantity { font-size: 24px; width: 50px; text-align: center; }
-        .confirm-btn {
-            background: #F39C12; color: white; font-size: 22px;
-            font-weight: bold; padding: 15px; border: none;
-            border-radius: 10px; margin-top: 20px; cursor: pointer;
-            transition: 0.3s; width: 100%;
-        }
-        .confirm-btn:hover { background: #E67E22; }
     </style>
 </head>
 <body>
-
-    <div class="container">
-        <h1>📦 ยืมวัสดุ</h1>
-
-        <label for="name">ชื่อนาม-สกุล:</label>
-        <input type="text" id="name" required>
-
-        <label for="student_id">รหัสนักศึกษา:</label>
-        <input type="text" id="student_id" required>
-
-        <label for="date_time_borrow">วันที่ยืม:</label>
-        <input type="datetime-local" id="date_time_borrow" required>
-
-        <label for="date_time_return">วันที่คืน:</label>
-        <input type="datetime-local" id="date_time_return" required>
-
-        <label for="purpose">วัตถุประสงค์การใช้งาน:</label>
-        <textarea id="purpose" rows="4" required></textarea>
-
-        <label for="room-select">เลือกห้อง:</label>
-        <select id="room-select" onchange="renderItems()">
-            <option value="">-- กรุณาเลือกห้อง --</option>
-            <option value="101">ห้องปฏิบัติการ 101</option>
-            <option value="102">ห้องปฏิบัติการ 102</option>
-            <option value="103">ห้องปฏิบัติการ 103</option>
-        </select>
-
-        <div id="items-list"></div>
-
-        <button class="confirm-btn" onclick="confirmBorrow()">✅ ยืนยันการยืม</button>
-    </div>
-
-    <script>
-        let itemsByRoom = {
-            "101": [{ name: "ลูกฟุตบอล", available: 10, borrowed: 0 },
-                    { name: "เชือกกระโดด", available: 5, borrowed: 0 }],
-            "102": [{ name: "เสื่อโยคะ", available: 7, borrowed: 0 },
-                    { name: "กรวยซ้อมกีฬา", available: 15, borrowed: 0 }],
-            "103": [{ name: "ดัมเบล", available: 6, borrowed: 0 },
-                    { name: "เครื่องยืดกล้ามเนื้อ", available: 3, borrowed: 0 }]
-        };
-
-        function renderItems() {
-            let selectedRoom = document.getElementById("room-select").value;
-            let list = document.getElementById("items-list");
-            list.innerHTML = "";
-            if (!selectedRoom) return;
-
-            itemsByRoom[selectedRoom].forEach((item, index) => {
-                let itemDiv = document.createElement("div");
-                itemDiv.className = "item";
-                itemDiv.innerHTML = `
-                    <div>${item.name} (คงเหลือ: <b>${item.available}</b>)</div>
-                    <div class="controls">
-                        <button class="btn minus" onclick="updateQuantity('${selectedRoom}', ${index}, -1)">-</button>
-                        <div class="quantity">${item.borrowed}</div>
-                        <button class="btn plus" onclick="updateQuantity('${selectedRoom}', ${index}, 1)">+</button>
-                    </div>
-                `;
-                list.appendChild(itemDiv);
-            });
-        }
-
-        function updateQuantity(room, index, change) {
-            let item = itemsByRoom[room][index];
-            if (item.borrowed + change >= 0 && item.available - change >= 0) {
-                item.borrowed += change;
-                item.available -= change;
-                renderItems();
-            }
-        }
-
-        function confirmBorrow() {
-            let name = document.getElementById("name").value;
-            let student_id = document.getElementById("student_id").value;
-            let borrowDate = document.getElementById("date_time_borrow").value;
-            let returnDate = document.getElementById("date_time_return").value;
-            let purpose = document.getElementById("purpose").value;
-            let selectedRoom = document.getElementById("room-select").value;
-
-            if (!name || !student_id || !borrowDate || !returnDate || !purpose || !selectedRoom) {
-                alert("กรุณากรอกข้อมูลให้ครบทุกช่อง!");
-                return;
-            }
-
-            let borrowedItems = itemsByRoom[selectedRoom].filter(item => item.borrowed > 0);
-            if (borrowedItems.length === 0) {
-                alert("กรุณาเลือกวัสดุที่ต้องการยืม");
-                return;
-            }
-
-            let data = {
-                name, student_id, borrowDate, returnDate, purpose, room: selectedRoom,
-                items: borrowedItems.map(item => ({ name: item.name, quantity: item.borrowed }))
-            };
-
-            fetch("YOUR_GOOGLE_APPS_SCRIPT_URL", {
-                method: "POST",
-                mode: "no-cors",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data)
-            }).then(() => alert("ส่งข้อมูลสำเร็จ!")).catch(error => console.error(error));
-        }
-    </script>
+    <h1>เชื่อมโยงสองลิ้งค์</h1>
+    
+    <p>คลิกที่ปุ่มด้านล่างเพื่อไปที่ลิงค์ต่างๆ:</p>
+    
+    <!-- ลิงค์ที่ 1 -->
+    <a href="https://script.google.com/macros/s/AKfycbwdMoRg-0tCsYZVaegowbZo_iwmzUHz5nNShx9_VQFKfdlr6vxZeOozBrkou2ZtetDq/exec" class="button" target="_blank">
+        ลิ้งค์ที่ 1
+    </a>
+    
+    <!-- ลิงค์ที่ 2 -->
+    <a href="https://script.google.com/macros/s/AKfycbyRxtGh0jtBkrmXfA7A8EQULtMQdDHivbdxjleskzBrZnhQwZ_2kxWHSqvWpJFDkGOD/exec" class="button" target="_blank">
+        ลิ้งค์ที่ 2
+    </a>
 
 </body>
 </html>
