@@ -3,44 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เชื่อมโยงสองลิ้งค์</title>
+    <title>เบิกวัสดุยืมคืน</title>
     <style>
         body {
             font-family: 'Sarabun', sans-serif;
-            padding: 20px;
+            background-color: #f3f4f6;
+            text-align: center;
+            padding: 40px;
         }
         h1 {
-            color: #1D4ED8;
+            color: #ff5733;  /* สีที่มีพลัง */
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 40px;
         }
         .button {
-            background-color: #1D4ED8;
+            background-color: #ff5733;  /* สีหลักที่ใช้ */
             color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
+            padding: 15px 30px;
+            border-radius: 15px;
             text-decoration: none;
             display: inline-block;
-            margin: 10px;
+            font-size: 1.1rem;
+            margin: 15px;
             text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
         .button:hover {
-            background-color: #2563EB;
+            background-color: #ff8a00;  /* สีเมื่อ hover */
+            transform: scale(1.1);
+        }
+        .button:active {
+            background-color: #e94e00;  /* สีเมื่อคลิก */
+            transform: scale(1);
+        }
+        .button:focus {
+            outline: none;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
         }
     </style>
 </head>
 <body>
-    <h1>เชื่อมโยงสองลิ้งค์</h1>
+    <h1>เชื่อมโยงสองลิ้งค์ - กีฬามันส์ๆ</h1>
     
     <p>คลิกที่ปุ่มด้านล่างเพื่อไปที่ลิงค์ต่างๆ:</p>
     
-    <!-- ลิงค์ที่ 1 -->
-    <a href="https://script.google.com/macros/s/AKfycbwdMoRg-0tCsYZVaegowbZo_iwmzUHz5nNShx9_VQFKfdlr6vxZeOozBrkou2ZtetDq/exec" class="button" target="_blank">
-        ลิ้งค์ที่ 1
-    </a>
-    
-    <!-- ลิงค์ที่ 2 -->
-    <a href="https://script.google.com/macros/s/AKfycbyRxtGh0jtBkrmXfA7A8EQULtMQdDHivbdxjleskzBrZnhQwZ_2kxWHSqvWpJFDkGOD/exec" class="button" target="_blank">
-        ลิ้งค์ที่ 2
-    </a>
+    <div class="container">
+        <!-- ลิงค์ที่ 1 -->
+        <a href="https://script.google.com/macros/s/AKfycbwdMoRg-0tCsYZVaegowbZo_iwmzUHz5nNShx9_VQFKfdlr6vxZeOozBrkou2ZtetDq/exec" class="button" target="_blank">
+            เบิกวัสดุยืม-คืน
+        </a>
+        
+        <!-- ลิงค์ที่ 2 -->
+        <a href="https://script.google.com/macros/s/AKfycbyRxtGh0jtBkrmXfA7A8EQULtMQdDHivbdxjleskzBrZnhQwZ_2kxWHSqvWpJFDkGOD/exec" class="button" target="_blank">
+            เบิกวัสดุสิ้นเปลือง
+        </a>
+    </div>
 
 </body>
 </html>
