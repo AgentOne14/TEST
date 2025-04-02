@@ -6,6 +6,7 @@
     <title>เลือกการดำเนินการ</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap');
 
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
@@ -18,50 +19,56 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            font-family: "Bebas Neue", sans-serif;
+            font-family: "Kanit", sans-serif;
             background: linear-gradient(-45deg, #003366, #0055A4, #00A86B, #57C84D);
             background-size: 400% 400%;
             animation: gradientAnimation 8s infinite ease-in-out;
             color: white;
             text-align: center;
+            margin: 0;
+            overflow: hidden;
         }
 
         .container {
             background: rgba(0, 0, 0, 0.8);
-            padding: 50px;
+            padding: 60px;
             border-radius: 20px;
-            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0px 20px 50px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
         }
 
         h1 {
-            font-size: 42px;
+            font-size: 45px;
             letter-spacing: 3px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 10px rgba(255, 255, 255, 0.3);
+            margin-bottom: 30px;
+            text-shadow: 3px 3px 15px rgba(255, 255, 255, 0.4);
             transition: transform 0.3s ease-in-out, text-shadow 0.3s ease-in-out;
         }
 
         h1:hover {
-            transform: scale(1.05);
-            text-shadow: 2px 2px 15px rgba(255, 255, 255, 0.6);
+            transform: scale(1.1);
+            text-shadow: 4px 4px 20px rgba(255, 255, 255, 0.8);
         }
 
         .option {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 280px;
-            padding: 20px;
-            margin: 15px;
-            font-size: 26px;
-            font-weight: bold;
+            width: 350px; /* ขนาดของปุ่ม */
+            height: 500px; /* ขนาดของปุ่ม */
+            margin: 20px;
+            font-size: 28px;
+            font-weight: 700;
             text-transform: uppercase;
             color: white;
-            border-radius: 12px;
+            border-radius: 15px;
             cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
             position: relative;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
         }
 
         .option::after {
@@ -71,46 +78,78 @@
             left: 0;
             width: 100%;
             height: 100%;
-            border-radius: 12px;
-            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            background: rgba(0, 0, 0, 0.4); /* ทำให้ภาพมีความทึบเพื่อให้ข้อความอ่านง่าย */
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
         }
 
+        /* รูปภาพพื้นหลังของแต่ละปุ่ม */
         .borrow {
-            background: linear-gradient(45deg, #FF4500, #FF8C00);
-            border-bottom: 4px solid #D63400;
+            background-image: url('ChatGPT Image Apr 2, 2025, 02_45_41 PM.png'); /* รูปภาพสำหรับปุ่มยืม */
         }
 
         .return {
-            background: linear-gradient(45deg, #1E90FF, #00BFFF);
-            border-bottom: 4px solid #0073E6;
+            background-image: url('ChatGPT Image Apr 2, 2025, 03_08_53 PM.png'); /* รูปภาพสำหรับปุ่มคืน */
         }
 
         .lab {
-            background: linear-gradient(45deg, #8E44AD, #9B59B6);
-            border-bottom: 4px solid #6C3483;
-        }
-        
-        .lab2 {
-            background: linear-gradient(45deg, #8E44AD, #9B59B6);
-            border-bottom: 4px solid #6C3483;
+            background-image: url('ChatGPT Image Apr 2, 2025, 03_18_02 PM.png'); /* รูปภาพสำหรับปุ่มห้องปฏิบัติการ */
         }
 
+        /* รูปภาพที่จะเปลี่ยนเมื่อเอาเมาส์ไปชี้ */
         .option:hover {
-            transform: translateY(-3px);
-            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.5);
+            transform: translateY(-6px);
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.6);
         }
 
         .option:hover::after {
             opacity: 1;
         }
 
-        .icon {
-            font-size: 30px;
-            margin-right: 12px;
+        /* เปลี่ยนภาพพื้นหลังเมื่อเมาส์ชี้ */
+        .borrow:hover {
+            background-image: url('ChatGPT Image Apr 2, 2025, 02_49_36 PM.png'); /* เปลี่ยนภาพเมื่อ hover */
         }
 
+        .return:hover {
+            background-image: url('ChatGPT Image Apr 2, 2025, 03_12_16 PM.png'); /* เปลี่ยนภาพเมื่อ hover */
+        }
+
+        .lab:hover {
+            background-image: url('ChatGPT Image Apr 2, 2025, 03_27_52 PM.png'); /* เปลี่ยนภาพเมื่อ hover */
+        }
+
+        .option:active {
+            transform: translateY(2px);
+        }
+
+        .icon {
+            font-size: 35px;
+            margin-right: 15px;
+        }
+
+   .option-text {
+    position: absolute;
+    font-size: 45px;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
+    color: red;
+    top: 40%; /* ตั้งตำแหน่งจากด้านบนเป็น 50% */
+    left: 50%; /* ตั้งตำแหน่งจากด้านซ้ายเป็น 50% */
+    transform: translate(-50%, -50%); /* ใช้เพื่อย้ายข้อความกลับไปกลาง */
+}
+
+        .option-text {
+            bottom: 20px; /* วางข้อความให้อยู่ที่ด้านล่าง */
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .icon:hover {
+            transform: scale(1.2);
+            transition: transform 0.3s ease;
+        }
     </style>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
@@ -118,14 +157,14 @@
     <div class="container">
         <h1>🏆 ระบบยืมคืนอุปกรณ์และจองห้องปฎิบัติการสาขาวิทยาศาสตร์การกีฬาและสุขภาพ 🏃‍♂️</h1>
         <div class="option borrow" onclick="location.href='ฟอมครุภัณฑ์.html'">
-            <span class="icon"><i class="fas fa-dumbbell"></i></span> ระบบยืมครุภัณฑ์
+            <span class="option-text">ระบบยืมครุภัณฑ์</span>
         </div>
         <div class="option return" onclick="location.href='ฟรอมวัสดุ.html'">
-            <span class="icon"><i class="fas fa-volleyball-ball"></i></span> ระบบยืมวัสดุ
+            <span class="option-text">ระบบยืมวัสดุ</span>
         </div>
-        <a href="https://script.google.com/a/macros/mfu.ac.th/s/AKfycbzx0GakYtUwKPQKe1rFJVoTsCsaifZxRQs0ZomBeogRjfqCAWZoDMnvMhgxrQiSqVWN/exec" class="option lab2" target="_blank">
-    <span class="icon"><i class="fas fa-chalkboard-teacher"></i></span> ระบบใช้ห้องปฎิบัติการ
-</a>
+        <a href="https://script.google.com/a/macros/mfu.ac.th/s/AKfycbzx0GakYtUwKPQKe1rFJVoTsCsaifZxRQs0ZomBeogRjfqCAWZoDMnvMhgxrQiSqVWN/exec" class="option lab" target="_blank">
+            <span class="option-text">ระบบใช้ห้องปฎิบัติการ</span>
+        </a>
     </div>
 </body>
 </html>
