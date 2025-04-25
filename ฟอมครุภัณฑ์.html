@@ -3,606 +3,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ฟอร์มยืม-คืน ครุภัณฑ์</title>
+    <title>วัสดุยืม-คืน</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background: linear-gradient(-45deg, #2C3E50, #34495E, #1ABC9C, #16A085);
-        }
-        form {
-            max-width: 500px;
- 		background: linear-gradient(135deg, #ffffff, #e3f2fd);
-            padding: 30px;
-            margin: auto;
-            border-radius: 10px;
-            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 0.5s ease-in-out;
-        }
- 		@keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        label {
-            font-weight: bold;
-            display: block;
-            margin-top: 10px;
-        }
-         input, select, textarea {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            border: 2px solid #90caf9;
-            border-radius: 8px;
-            background: #f3faff;
-            transition: 0.3s;
-        }
-        button {
-            width: 100%;
-            background-color: #28a745;
+            font-family: 'Sarabun', sans-serif;
+            background-color: #f0f0f0;
             color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-        button:hover {
-            background-color: #218838;
-        }
-        .select-button {
-            background-color: #007bff;
-        }
-        .select-button:hover {
-            background-color: #0056b3;
-        }
-        #selected-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .selected-item {
-            background-color: #e1f5fe;
-            padding: 5px 10px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-        }
-        .selected-item img {
-            width: 30px;
-            height: 30px;
-            margin-right: 5px;
-        }
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.6);
-            padding-top: 50px;
-        }
-        .modal-content {
-            background-color: white;
-            margin: auto;
-            padding: 20px;
-            border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
+            padding: 50px;
         }
-        .close {
-            float: right;
-            font-size: 24px;
-            cursor: pointer;
+
+        h1 {
+            color: #ff5733;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
         }
-        .close:hover {
-            color: red;
+
+        p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 50px;
         }
-        .item-container {
+
+        .container {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
         }
-        .item-option {
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            padding: 10px;
-            cursor: pointer;
-            background-color: #f1f1f1;
+
+        .button-container {
+            display: inline-block;
+            margin: 20px;
             text-align: center;
-            width: 150px;
-            transition: 0.3s;
-        }
-        .item-option img {
-            width: 100px;
-            height: 100px;
-        }
-        .item-option:hover {
-            background-color: #d0e9ff;
-            transform: scale(1.05);
         }
 
-	    .item-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 15px;
-    max-height: 400px; /* กำหนดความสูงสูงสุด */
-    overflow-y: auto; /* เลื่อนขึ้นลงได้เมื่อไอเทมเยอะ */
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #fff;
-}
+        .button-container img {
+            width: 500px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
+            height: 500px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
+            object-fit: cover; /* ปรับให้รูปเต็มพื้นที่ */
+            border-radius: 10px;
+            transition: transform 0.2s ease, opacity 0.3s ease;
+        }
 
-.selected-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
+        /* เมื่อเมาส์ชี้ที่รูปภาพ ให้เปลี่ยนภาพ */
+        .button-container:hover img {
+            content: url('ChatGPT Image Apr 2, 2025, 10_36_02 AM.png'); /* เปลี่ยนเป็นภาพที่ต้องการ */
+            transform: scale(1.1);
+        }
 
-.selected-item img {
-    width: 40px;
-    height: 40px;
-    object-fit: cover;
-    border-radius: 5px;
-}
+        .button-container-2:hover img {
+            content: url('ChatGPT Image Apr 2, 2025, 10_52_47 AM.png'); /* เปลี่ยนเป็นภาพที่ต้องการ */
+            transform: scale(1.1);
+        }
 
-.selected-item button {
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-.selected-item button:hover {
-    background: darkred;
-}
+        .button-text {
+            margin-top: 10px;
+            font-size: 3rem;
+            color: #333;
+            text-transform: uppercase;
+        }
 
-/* ปรับแต่ง Scrollbar (สำหรับ Chrome & Edge) */
-.item-container::-webkit-scrollbar {
-    width: 8px;
-}
-.item-container::-webkit-scrollbar-thumb {
-    background-color: #888;
-    border-radius: 4px;
-}
-.item-container::-webkit-scrollbar-thumb:hover {
-    background-color: #555;
-}	    
+        .message-box {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+        }
 
-#loadingOverlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    color: white;
-    font-size: 20px;
-    z-index: 9999;
-}
+        /* Media Query สำหรับมือถือ */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem; /* ลดขนาดตัวอักษรหัวข้อ */
+            }
 
-.spinner {
-    border: 6px solid rgba(255, 255, 255, 0.3);
-    border-top: 6px solid white;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
+            p {
+                font-size: 1rem; /* ลดขนาดข้อความ */
+            }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-  
+            .button-container {
+                width: 80%; /* ทำให้ปุ่มมีขนาดเล็กลงในมือถือ */
+                max-width: 200px;
+            }
+
+            .button-container img {
+                width: 100%; /* ให้ภาพขยายเต็มพื้นที่ */
+                height: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem; /* ลดขนาดตัวอักษรหัวข้อให้เล็กลงสำหรับมือถือขนาดเล็ก */
+            }
+
+            p {
+                font-size: 0.9rem; /* ลดขนาดข้อความ */
+            }
+
+            .button-container {
+                width: 90%; /* ปรับให้ปุ่มเต็มความกว้างของหน้าจอ */
+                max-width: 180px;
+            }
+        }
+
     </style>
 </head>
 <body>
-
-<h2 style="text-align: center;">ฟอร์มยืม-คืน ครุภัณฑ์</h2>
-<form id="dataForm">
-
-    <label for="name">ชื่อนาม-สกุล:</label>
-    <input type="text" id="name" name="name" required>
-
-    <label for="student_id">รหัสนักศึกษา:</label>
-    <input type="text" id="student_id" name="student_id" required>
-
-    <label for="date_time_borrow">วันที่ยืม:</label>
-    <input type="datetime-local" id="date_time_borrow" name="date_time_borrow" required>
-
-    <label for="date_time_return">วันที่คืน:</label>
-    <input type="datetime-local" id="date_time_return" name="date_time_return" required>
-
-    <label for="purpose">วัตถุประสงค์การใช้งาน:</label>
-    <textarea id="purpose" name="purpose" rows="4" required></textarea>
-
-    <label for="subject">รายวิชา:</label>
-    <input type="text" id="subject" name="subject" required>
-
-    <label for="instructor">เบอร์โทรติดต่อ:</label>
-    <input type="text" id="instructor" name="instructor" required>
-
-    <label for="room">เลือกห้อง:</label>
-    <select id="room" onchange="updateItems()" required>
-        <option value="">-- เลือกห้อง --</option>
-        <option value="ห้อง GM204">ห้อง GM204</option>
-        <option value="ห้อง GM201">ห้อง GM201</option>
-        <option value="ห้อง GM116">ห้อง GM116</option>
-	    <option value="ห้อง GM111">ห้อง GM111</option>
-        <option value="ห้อง GM202">ห้อง GM202</option>
-        <option value="ห้อง3D">ห้อง3D</option>
-    </select>
-
-    <label>เลือกครุภัฑณ์:</label>
-    <button type="button" class="select-button" onclick="openItemModal()">เลือกครุภัฑณ์</button>
-    <div id="selected-items">ยังไม่ได้เลือกครุภัฑณ์</div>
-
-    <button type="submit">ส่งข้อมูล</button>
-</form>
-
-<!-- Modal เลือกไอเทม -->
-<div id="itemModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeItemModal()">&times;</span>
-        <h2>เลือกครุภัฑณ์</h2>
-        <div id="item-container" class="item-container"></div>
+    <div class="message-box">
+        <h1>เลือกประเภทวัสดุที่ต้องการเบิก-ยืม</h1>
+        <p>คลิกที่รูปภาพด้านล่างเพื่อไปที่ลิงค์ต่างๆ:</p>
     </div>
-</div>
 
-<script>
-    function closeItemModal() {
-        document.getElementById("itemModal").style.display = "none";
-    }
-</script>
+    <div class="container">
+        <!-- ลิงค์ที่ 1 -->
+        <div class="button-container">
+            <a href="https://script.google.com/macros/s/AKfycbwDbw-DfcMjof_LyxuUwO8mikYTGdL2TSUc_2P4bUd9qiNrqhGIp1ApT3HPVl47D9jw/exec" target="_blank">
+                <img src="ChatGPT Image Apr 2, 2025, 10_35_00 AM.png" alt="วัสดุสิ้นเปลือง" />
+                <div class="button-text">วัสดุสิ้นเปลือง</div>
+            </a>
+        </div>
 
-<script>
-    let selectedItems = [];
-
-    const itemsByRoom = {
-        "ห้อง GM204": [
-		{ name: "711000601956004 เก้าอี้เอนกประสงค์ แบบที่ 2", image: "เก้าอี้เอนกประสงค์ แบบที่ 2.jpg" },
-            { name: "711000601956005 เก้าอี้เอนกประสงค์ แบบที่ 2", image: "เก้าอี้เอนกประสงค์ แบบที่ 2.jpg" }, 
-  		{ name: "744000100166020 คอมพิวเตอร์ตั้งโต๊ะ", image: "คอมพิวเตอร์ตั้งโต๊ะ.jpg" },
-		{ name: "744000200166009 คอมพิวเตอร์แบบพกพา", image: "คอมพิวเตอร์แบบพกพา.jpg" },
-		{ name: "744000200166010 คอมพิวเตอร์แบบพกพา ", image: "คอมพิวเตอร์แบบพกพา.jpg" },
-		{ name: "744000200166011 คอมพิวเตอร์แบบพกพา", image: "คอมพิวเตอร์แบบพกพา Lenovo .jpg" },
-		{ name: "744000200166012 คอมพิวเตอร์แบบพกพา", image: "คอมพิวเตอร์แบบพกพา Lenovo .jpg" },
-		{ name: "744000200166013 คอมพิวเตอร์แบบพกพา", image: "คอมพิวเตอร์แบบพกพา Lenovo .jpg" },
-		{ name: "744000200166014 คอมพิวเตอร์แบบพกพา", image: "คอมพิวเตอร์แบบพกพา Lenovo .jpg" },
-		{ name: "744000200166015 คอมพิวเตอร์แบบพกพา", image: "คอมพิวเตอร์แบบพกพา Lenovo .jpg" },
-		{ name: "744000200165033 คอมพิวเตอร์แบบพกพาสำหรับบันทึกข้อมูล", image: "----------------.jpg" },
-		{ name: "773000301865007 คอมพิวเตอร์สำหรับวิเคราะห์ข้อมูล", image: "----------------.jpg" },
-		{ name: "744001002366007 เครื่องพิมพ์", image: "เครื่องพิมพ์ Brother.jpg" },
-		{ name: "74400100023661000030 เครื่องพิมพ์แบบเลเซอร์สี", image: "เครื่องพิมพ์แบบเลเซอร์สี.jpg" },
-		{ name: "74400120016661000134 เครื่องสำรองไฟ ขนาดไม่น้อกว่า 1 KVA", image: "เครื่องสำรองไฟ ขนาดไม่น้อกว่า 1 KVA.jpg" },
-		{ name: "71100070035661000004 ชั้นวางเอนกประสงค์", image: "----------------.jpg" },
-		{ name: "668001100266003 ชุดทดสอบระบบเผาผลาญและวิเคราะห์แก๊สอัตโนมัติ แบบเค", image: "----------------.jpg" },
-		{ name: "668001100266001 ชุดทดสอบระบบเผาผลาญ วิเคราะห์แก๊สอัตฯ มัติแบบพกพา", image: "----------------.jpg" },
-		{ name: "668001100266002 ชุดทดสอบระบบเผาผลาญ วิเคราะห์แก๊สอัตฯ มัติแบบพกพา", image: "----------------.jpg" },
-		{ name: "773000302166001 เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว", image: "เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว.jpg" },
-		{ name: "773000302166002 เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว", image: "เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว.jpg" },
-		{ name: "773000302166003 เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว", image: "เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว.jpg" },
-		{ name: "773000302166004 เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว", image: "เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว.jpg" },
-		{ name: "773000302166005 เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว", image: "เครื่องรับโทรทัศน์ ขนาดไม่น้อยกว่า 50 นิ้ว.jpg" },
-		{ name: "744001002459008 เครื่องพิมพ์คอมพิเตอร์", image: "เครื่องพิมพ์คอมพิเตอร์ Sumsung_ML-2165.jpg" },
-		{ name: "41300020001681000052 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000053 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000054 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000055 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000056 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000057 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000058 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000059 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000060 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "41300020001681000061 เครื่องฟอกอากาศ", image: "----------------.jpg" },
-		{ name: "74400020001681000003   เครื่องคอมพิวเตอร์แบบพกพา", image: "----------------.jpg" },
-		{ name: "74400020001681000002   เครื่องคอมพิวเตอร์แบบพกพา ", image: "----------------.jpg" },
-		{ name: "744000200166008   เครื่องคอมพิวเตอร์แบบพกพาสำหรับประมวลผล ", image: "----------------.jpg" },
-		{ name: "74400100023671000014   เครื่องพิมพ์คอมพิวเตอร์", image: "----------------.jpg" },
-		{ name: "744001002366006   เครื่องพิมพ์ชนิดเลเซอร์สี", image: "----------------.jpg" },
-		{ name: "65300040023681000001   เครื่องมือทดสอบพลังสำหรับการกระโดด และการวิ่ง ตำบล", image: "----------------.jpg" },
-		{ name: "65300440004681000004   เครื่องมือทดสอบและฝึก เวลาปฏิกิริยาตอบสนอง ความเร็ ", image: "----------------.jpg" },
-       	{ name: "65150750001671000001   เครื่องวิเคราะห์องค์ประกอบร่างกายแบบเคลื่อนย้ายได้ ", image: "----------------.jpg" },
-		{ name: " 78300160006681000001   ลู่วิ่งกลแบบราวพักแขนสั้น ตำบลท่าสุด อำเภอเมืองเชี", image: "----------------.jpg" },
-		{ name: "744001201666028   เครื่องสำรองไฟขนาดไม่ต่ำกว่า 1 KVA", image: "----------------.jpg" },
-		{ name: "744000200166005   คอมพิวเตอร์แบบพกพา", image: "----------------.jpg" },
-		{ name: "744000100163057   คอมพิวเตอร์สำหรับประมวลผล ", image: "----------------.jpg" },
-		{ name: "744001003963001   เครื่องพิมพ์เลเซอร์ ขาว-ดำ", image: "----------------.jpg" },
-		{ name: "744000200162004   คอมพิวเตอร์แบบพกพา ", image: "----------------.jpg" },
-		{ name: "744001002362010   เครื่องพิมพ์คอมพิวเตอร์แบบสี ", image: "----------------.jpg" },
-		{ name: "653001201762001   รถเข็นสำหรับวางชุดวิเคราะห์แก๊ส", image: "----------------.jpg" },
-		{ name: "651502900362001   อุปกรณ์วัดอัตราการเต้นของหัวใจ", image: "----------------.jpg" },
-		{ name: "651502900362002   อุปกรณ์วัดอัตราการเต้นของหัวใจ ", image: "----------------.jpg" },
-		{ name: "651502900362003   อุปกรณ์วัดอัตราการเต้นของหัวใจ ", image: "----------------.jpg" },
-		{ name: "65150400001661000012 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000013 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000014 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000015 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000016 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-       	{ name: "65150400001661000017 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000018 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000019 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000020 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "65150400001661000021 เครื่องวัดปริมาณความอิ่มตัวของออกซิเจนในเลือดและชี", image: "IMG_7724.jpg" },
-		{ name: "651505800560001 ชุดวัดสัญญาณไฟฟ้ากล้ามเนื้อ", image: "----------------.jpg" },
-		{ name: "651503600254001 เครื่องตรวจคลื่นไฟฟ้าหัวใจแบบพกพา (Personal ECG Re)", image: "เครื่องตรวจคลื่นไฟฟ้าหัวใจแบบพกพา (Personal ECG Re.jpg"},
-  		{ name: "651503600254002 เครื่องตรวจคลื่นไฟฟ้าหัวใจแบบพกพา (Personal ECG Re)", image: "เครื่องตรวจคลื่นไฟฟ้าหัวใจแบบพกพา (Personal ECG Re.jpg"},
-  		{ name: "651504200266001 เครื่องตรวจแลคเตทปลายนิ้ว", image: "เครื่องตรวจแลคเตทปลายนิ้ว.jpg" },
-  		{ name: "651504200266002 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266003 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266004 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266005 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266006 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266007 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266008 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266009 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266010 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-  		{ name: "651504200266011 เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย", image: "เครื่องตรวจวัดแลคเตท ตำบลท่าสุด อำเภอเมืองเชียงราย.jpg" },
-		{ name: "65150700002661000001 เครื่องทดสอบการทรงตัวและฝึกการทรงตัวแบบเคลื่อนย้าย", image: "เครื่องวิเคราะห์องค์ประกอบของร่างกาย ตำบลท่าสุด อำเภอเมือง จังหวัดเชียงราย.jpg" },
-  		{ name: "653000402666001 เครื่องทดสอบระบบพลังงานแบบลู่วิ่งไฟฟ้าพร้อมระบบควบคุม", image: "เครื่องทดสอบระบบพลังงานแบบลู่วิ่งไฟฟ้าพร้อมระบบควา.jpg" },
-  		{ name: "653000402358001 เครื่องทดสอบสมรรถภาพของพลังกล้ามเนื้อและการกระโดด", image: "เครื่องทดสอบสมรรถภาพของพลังกล้ามเนื้อและการกระโดด.jpg" },
-  		{ name: "773000800954001 เครื่องเล่น DVD", image: "เครื่องเล่น DVD.jpg" },
- 	 	{ name: "651507000154001 เครื่องวัดการทรงตัว", image: "smartboard.jpg" },
-  		{ name: "651503800254001 เครื่องวัดกำลังหลังและขาแบบเข็ม", image: "เครื่องวัดกำลังหลังและขาแบบเข็ม.jpg" },
-  		{ name: "651503800254002 เครื่องวัดกำลังหลังและขาแบบตัวเลข", image: "เครื่องวัดกำลังหลังและขาแบบตัวเลข.jpg" },
-  		{ name: "651504200155001 เครื่องวัดไขมันใต้ผิวหนัง (Skinfold Caliper)", image: "เครื่องวัดไขมันใต้ผิวหนัง (Skinfold Caliper).jpg" },
-  		{ name: "651504700355001 เครื่องวัดความจุปอดแบบพกพา", image: "เครื่องวัดความจุปอดแบบพกพา.jpg" },
-  		{ name: "651502100363001 เครื่องวัดความดันแบบปรอท Sphygmomanometer", image: "เครื่องวัดความดันแบบปรอท Sphygmomanometer.jpg" },
-  		{ name: "651502100363002 เครื่องวัดความดันแบบปรอท Sphygmomanometer", image: "เครื่องวัดความดันแบบปรอท Sphygmomanometer.jpg" },
-  		{ name: "651502200651002 เครื่องวัดความดันโลหิตชนิดหัวนาฬิกา", image: "เครื่องวัดความดันโลหิตชนิดหัวนาฬิกา.jpg" },
-  		{ name: "651502200357001 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "เครื่องวัดความดันโลหิตแบบดิจิตอล.jpg" },
-  		{ name: "651502200357002 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "เครื่องวัดความดันโลหิตแบบดิจิตอล.jpg" },
-  		{ name: "651502700163009 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "เครื่องวัดความดันโลหิตแบบดิจิตอล OMRON_HEM-7121.jpg" },
-  		{ name: "651502700163010 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "เครื่องวัดความดันโลหิตแบบดิจิตอล OMRON_HEM-7121.jpg" },
-  		{ name: "651502700163011 เครื่องวัดความดันโลหิตแบบดิจิตอล", image: "เครื่องวัดความดันโลหิตแบบดิจิตอล OMRON_HEM-7121.jpg" },
-  		{ name: "651502100356004 เครื่องวัดความดันโลหิต แบบปรอทแบบตั้งโต๊ะ", image: "เครื่องวัดความดันโลหิต แบบปรอทแบบตั้งโต๊ะ.jpg" },
-  		{ name: "651502100356005 เครื่องวัดความดันโลหิต แบบปรอทแบบตั้งโต๊ะ", image: "เครื่องวัดความดันโลหิต แบบปรอทแบบตั้งโต๊ะ.jpg" },
-  		{ name: "651503700454001 เครื่องวัดความอ่อนตัวด้านหน้าแบบตัวเลข", image: "เครื่องวัดความอ่อนตัวด้านหน้าแบบตัวเลข.jpg" },
-  		{ name: "651503700454001 เครื่องวัดความอ่อนตัวด้านหน้าแบบธรรมดา", image: "เครื่องวัดความอ่อนตัวด้านหน้าแบบธรรมดา.jpg" },
-  		{ name: "651503700554001 เครื่องวัดความอ่อนตัวด้านหลังแบบตัวเลข", image: "เครื่องวัดความอ่อนตัวด้านหลังแบบตัวเลข.jpg" },
-  		{ name: "651502100162001 เครื่องวัดปฏิกิริยาตอบสนอง ระหว่างตากับมือ", image: "เครื่องวัดปฏิกิริยาตอบสนอง ระหว่างตากับมือ แ.jpg" },
-  		{ name: "651503900365001 เครื่องวัดผลการตอบสนองกลับทางสรีรวิทยาและจิตวิทยา", image: "เครื่องวัดผลการตอบสนองกลับทางสรีรวิทยาและจิตวิทยา.jpg" },
-  		{ name: "651503700254001 เครื่องวัดแรงบีบมือแบบเข็ม", image: "เครื่องวัดแรงบีบมือแบบเข็ม.jpg" },
-  		{ name: "651503700254002 เครื่องวัดแรงบีบมือแบบตัวเลข", image: "เครื่องวัดแรงบีบมือแบบตัวเลข.jpg" },
-		{ name: "65150270001661000007 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000008 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000009 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000010 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000011 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000012 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000013 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000014 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000015 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "65150270001661000016 เครื่องวัดวามดันอัตโนมัติ ", image: "เครื่องวัดวามดันอัตโนมัติOMRON_HEM-7120.jpg" },
-		{ name: "651529000166001   เครื่องวัดสัญญาณการเต้นหัวใจแบบไร้สาย", image: "เครื่องวัดสัญญาณการเต้นหัวใจแบบไร้สาย.jpg" },
-		{ name: "653005700254001   เครื่องวัดสัดส่วนร่างกายแบบมาร์ติน ", image: "เครื่องวัดสัดส่วนร่างกายแบบมาร์ติน.jpg" },
-		{ name: "651507500163001   เครื่องวิเคราะห์องค์ประกอบของร่างกาย ตำบลท่าสุด อำ", image: "เครื่องวิเคราะห์องค์ประกอบของร่างกาย Accuniq_BC380.jpg" },
-		{ name: "744001201663034   เครื่องสำรองไฟฟ้าขนาด 1KVA ", image: "เครื่องสำรองไฟขนาดไม่ต่ำกว่า 1 KVA.jpg" },
-		{ name: "653000401466001 จักรยานทดสอบและวิเคราะห์สมรรถภาพระบบพลังงานแอนแอโร", image: "----------------.jpg" },
-		{ name: "653000401466002 จักรยานทดสอบและวิเคราะห์สมรรถภาพระบบพลังงานแอนแอโร", image: "----------------.jpg" },
-		{ name: "653000401466003 จักรยานทดสอบและวิเคราะห์สมรรถภาพระบบพลังงานแอนแอโร", image: "----------------.jpg" },
-		{ name: "653000401466004 จักรยานทดสอบและวิเคราะห์สมรรถภาพระบบพลังงานแอนแอโร", image: "----------------.jpg" },
-		{ name: "653000401466005 จักรยานทดสอบและวิเคราะห์สมรรถภาพระบบพลังงานแอนแอโร", image: "----------------.jpg" },
-		{ name: "653000403262001 จักรยานวัดงาน สำหรับทดสอบสมรรถภาพทางกาย พร้อ", image: "จักรยานวัดงาน สำหรับทดสอบสมรรถภาพทางกาย Monark_894E.jpg" },
-		{ name: "653000401459001   จักรยานวัดสมรรถภาพร่างกาย", image: "จักรยานวัดสมรรถภาพร่างกาย.jpg" },
-		{ name: "651502800255001   ชุดประคุบด้วยความเย็น (Cryo Cuff) ", image: "ชุดประคุบด้วยความเย็น (Cryo Cuff).jpg" },
-		{ name: "651510300157001   ชุดวัดความเร็วและอัตราเร่งของการวิ่ง ", image: "ชุดวัดความเร็วและอัตราเร่งของการวิ่ง.jpg" },
-		{ name: "651504200255002   ชุดวัดปริมาณกรดแลคติกในเลือด", image: "ชุดวัดปริมาณกรดแลคติกในเลือด.jpg" },
-		{ name: "651503800357001   ชุดวัดสมรรถนะนักกีฬาระบบไร้สายทางไกลแบบ Real-time", image: "ชุดวัดสมรรถนะนักกีฬาระบบไร้สายทางไกลแบบ Real-time(กล่อง).jpg" },
-		{ name: "663504800362001   ชุดวิเคราะห์การแลกเปลี่ยนแก๊ส ", image: "ชุดวิเคราะห์การแลกเปลี่ยนแก๊ส.jpg" },
-		{ name: "651507500159001   ชุดวิเคราะห์องค์ประกอบของร่างกายแบบพกพา ", image: "ชุดวิเคราะห์องค์ประกอบของร่างกายแบบพกพา.jpg" },
-		{ name: "651503600157001   ชุดอุปกรณ์วัดอัตราการเต้นหัวใจแบบไร้สายพร้อมนาฬิกา", image: "IMG_7723.jpg" },
-		{ name: "651503600157002   ชุดอุปกรณ์วัดอัตราการเต้นหัวใจแบบไร้สายพร้อมนาฬิกา", image: "IMG_7723.jpg" },
-		{ name: "651503600157003   ชุดอุปกรณ์วัดอัตราการเต้นหัวใจแบบไร้สายพร้อมนาฬิกา ", image: "IMG_7723.jpg" },
-		{ name: "711001405052004 ตู้เก็บสารเคมีและผลิตภัณฑ์ยาสำเร็จรูป", image: "smartboard.jpg" },
-  		{ name: "711001400656008 ตู้เหล็ก 2 บาน", image: "ตู้เหล็ก 2 บาน.jpg" },
-		{ name: "711001400656009 ตู้เหล็ก 2 บาน", image: "ตู้เหล็ก 2 บาน.jpg" },
-  		{ name: "711001400654051 ตู้เหล็กบานทึบ", image: "ตู้เหล็กบานทึบ.jpg" },
-  		{ name: "653000200156001 เปลสนาม", image: "เปลสนาม.jpg" },
-  		{ name: "744001504854001 โปรแกรมประมวลผลการทดสอบสมรรถภาพ", image: "โปรแกรมประมวลผลการทดสอบสมรรถภาพ.jpg" },
-		{ name: "744001002459008 เครื่องพิมพ์คอมพิเตอร์", image: "----------------.jpg" }
-        ],
-
-        "ห้อง GM201": [
-            { name: "78300160029681000001	เครื่องบริหารกล้ามเนื้อสะโพกและต้นขา ตำบลท่าสุด อำ", image: "speaker.jpg" },
-            { name: "78300160028681000001	เครื่องฝึกความแข็งแรงกล้ามเนื้อขา ตำบลท่าสุด อำเภอ", image: "tv.jpg" },
-		{ name: "65300440003681000001	เครื่องทดสอบการเคลื่อนไหวและสมดุลของร่างกายเบื้องต", image: "----------------.jpg" },
-		{ name: "78300100019681000001	เครื่องฝึกความแข็งแรงกล้ามเนื้อลำตัวด้านข้างลักษณะ", image: "----------------.jpg" },
-		{ name: "78300180001681000001	เครื่องฝึกความแข็งแรงกล้ามเนื้อหน้าท้องลักษณะงอตัว", image: "----------------.jpg" },
-		{ name: "78300160009681000001	เครื่องออกกำลังกายกรรเชียงบก ตำบลท่าสุด อำเภอเมือง", image: "----------------.jpg" },
-		{ name: "78300190002681000001	เครื่องออกกำลังกายแบบเคเบิลไม่จำกัดทิศทาง ตำบลท่าส", image: "----------------.jpg" },
-		{ name: "78300190002681000002	เครื่องออกกำลังกายแบบเคเบิลไม่จำกัดทิศทาง ตำบลท่าส", image: "----------------.jpg" },
-		{ name: "78300190002681000003	เครื่องออกกำลังกายแบบเคเบิลไม่จำกัดทิศทาง ตำบลท่าส", image: "----------------.jpg" },
-		{ name: "78100030001681000001	ชุดดัมเบลล์พร้อมที่วาง ตำบลท่าสุด อำเภอเมืองเชียงร", image: "----------------.jpg" },
-		{ name: "78100030001681000002	ชุดดัมเบลล์พร้อมที่วาง ตำบลท่าสุด อำเภอเมืองเชียงร", image: "----------------.jpg" },
-		{ name: "65300040023681000002	ชุดทดสอบการกระโดดแนวดิ่ง ตำบลท่าสุด อำเภอเมืองเชีย", image: "----------------.jpg" },
-		{ name: "78300010017681000001	ชุดอุปกรณ์ฝึกความแข็งแรงด้วยบาร์เบล ตำบลท่าสุด อำเ", image: "----------------.jpg" },
-		{ name: "78300010017681000002 ชุดอุปกรณ์ฝึกความแข็งแรงด้วยบาร์เบล ตำบลท่าสุด อำเ", image: "----------------.jpg" },
-		{ name: "78300010017681000003	ชุดอุปกรณ์ฝึกความแข็งแรงด้วยบาร์เบล ตำบลท่าสุด อำเ", image: "----------------.jpg" },
-		{ name: "78300010017681000004	ชุดอุปกรณ์ฝึกความแข็งแรงด้วยบาร์เบล ตำบลท่าสุด อำเ", image: "----------------.jpg" },
-		{ name: "78300160006681000002	ลู่วิ่งออกกำลังกายแบบใช้ไฟฟ้า ตำบลท่าสุด อำเภอเมือ", image: "----------------.jpg" },
-		{ name: "783001600257001 คานโอลิมปิค", image: "คานโอลิมปิค.jpg" },
-		{ name: "783001600257002 คานโอลิมปิค", image: "คานโอลิมปิค.jpg" },
-		{ name: "783001000764001 เครื่องบริหารกล้ามเนื้อต้นขาด้านหน้า", image: "เครื่องบริหารกล้ามเนื้อต้นขาด้านหน้า.jpg" },
-		{ name: "783001000864001 เครื่องบริหารกล้ามเนื้อต้นขาด้านหลัง", image: "เครื่องบริหารกล้ามเนื้อต้นขาด้านหลัง.jpg" },
-		{ name: "783001602964001 เครื่องบริหารกล้ามเนื้อสะโพกและต้นขาด้านหน้า ตำบลท", image: "เครื่องบริหารกล้ามเนื้อสะโพกและต้นขาด้านหน้า.jpg" },
-		{ name: "783000601364001 เครื่องบริหารกล้ามเนื้ออกและหัวไหล่ ตำบลท่าสุด อำเ", image: "เครื่องบริหารกล้ามเนื้ออกและหัวไหล่ ตำบลท่าสุด อำเมือง จังหวัดเชียงราย.jpg" },
-		{ name: "783001001164001 เครื่องฝึกความแข็งแรงกล้ามเนื้อขาและหลังส่วนล่าง ต", image: "เครื่องฝึกความแข็งแรงกล้ามเนื้อขาและหลังส่วนล่าง.jpg" },
-		{ name: "783001500164001 เครื่องฝึกความแข็งแรงกล้ามเนื้อปีกหลัง", image: "เครื่องฝึกความแข็งแรงกล้ามเนื้อปีกหลัง.jpg" },
-		{ name: "783001600358001 เครื่องฝึกยกน้ำหนัก Free Weight แบบ Smith Machine", image: "เครื่องฝึกยกน้ำหนัก Free Weight แบบ Smith Machine.jpg" },
-		{ name: "653000401454001 จักรยานนั่งทดสอบสมรรถภาพหัวใจ", image: "----------------.jpg" },
-		{ name: "ชั้นวางของเนกประสงค์ 4 ชั้น 60*180*200 ซม.", image: "ชั้นวางของเนกประสงค์ 4 ชั้น 60_180_200 ซม..jpg" },
-		{ name: "783000601257003 ชุดแผ่นน้ำหนัก", image: "ชุดแผ่นน้ำหนัก.jpg" },
-		{ name: "783000601257004 ชุดแผ่นน้ำหนัก", image: "ชุดแผ่นน้ำหนัก.jpg" },
-		{ name: "773001600655001 ลู่วิ่งอัตโนมัติสำหรับทอสอบสมรรถภาพ", image: "----------------.jpg" }
-        ],
-
-        "ห้อง GM116": [
-            { name: "583500100554001 ตู้ขยายเสียงเคลื่อนที่", image: "computer.jpg" },
-            { name: "712500700152002 ตู้ส่งงาน 0.35*1.52*1.725 ม.", image: "printer.jpg" },
-            { name: "653000100154001 เตียงฝึกปฏิบัติการ เตียงสูง", image: "เตียงฝึกปฏิบัติการ เตียงสูง.jpg" },
- 		{ name: "653000100154002 เตียงฝึกปฏิบัติการ เตียงสูง", image: "เตียงฝึกปฏิบัติการ เตียงสูง.jpg" },
- 		{ name: "653000100154003 เตียงฝึกปฏิบัติการ เตียงสูง", image: "เตียงฝึกปฏิบัติการ เตียงสูง.jpg" },
-            { name: "711001500156019 ตู้ล็อกเกอร์ แบบ 12 ช่อง", image: "ตู้ล็อกเกอร์ แบบ 12 ช่อง.jpg" },
-		{ name: "ตียงนวดสนามแบบพับได้ ตำบลท่าสุด อำเภอเมืองเชียงรา", image: "IMG_7786.jpg" },
-		{ name: "เตียงนวดสนามพับได้", image: "IMG_7787.jpg" }
-        ],
-	  
-	  "ห้อง GM111": [
-            { name: "เก้าอี้เรียนแบบเคลื่อนย้ายได้", image: "เก้าอี้เรียนแบบเคลื่อนย้ายได้.jpg" },
-            { name: "783002800155001 เครื่องวัดระยะการกระโดดไกลแบบแผ่นยาง", image: "เครื่องวัดระยะการกระโดดไกลแบบแผ่นยาง.jpg" },
-            { name: "ชั้นวางของ", image: "ชั้นวางของ.jpg" },
-      	{ name: "653000102756001 เตียงสนามแบบพับได้", image: "เตียงสนามแบบพับได้เก่า.jpg" },
-      	{ name: "653000801454001 รถเข็นตะแกรงเหล็ก", image: "รถเข็นตะแกรงเหล็ก.jpg" },
-      	{ name: "653000801454002 รถเข็นตะแกรงเหล็ก", image: "รถเข็นตะแกรงเหล็ก.jpg" },
-            { name: "ชั้นวางของเนกประสงค์ 4 ชั้น 60*180*200 ซม.", image: "ชั้นวางของเนกประสงค์ 4 ชั้น 60_180_200 ซม..jpg" }
-        ],
-
-	   "ห้อง GM202": [
-            { name: "ไม่มีจ้า ห้องนี้", image: "computer.jpg" },
-		{ name: "ไม่มีจ้า ห้องนี้", image: "computer.jpg" }
-        ],
-
-	   "ห้อง3D": [
-            { name: "กล้องจับภาพอินฟาเรด", image: "computer.jpg" },
-            { name: "744000100163075 คอมพิวเตอร์แบบตั้งโต๊ะ", image: "printer.jpg" },
-            { name: "744000200163036 คอมพิวเตอร์แบบพกพา", image: "wireless_mouse.jpg" },
- 		{ name: "744000902863007 Monitor 23", image: "wireless_mouse.jpg" },
- 		{ name: "744000902863008 Monitor 23", image: "wireless_mouse.jpg" },
- 		{ name: "744001508763001 โปรแกรมวิเคราะห์การเคลื่อนไวแบบ 2 มิติ", image: "wireless_mouse.jpg" },
-            { name: "แผ่นวัดแรงปฏิกิริยาจากพื้น", image: "wireless_keyboard.jpg" }
-        ]
-    };
-
-   function openItemModal() {
-            const room = document.getElementById("room").value;
-            if (!room) {
-                alert("กรุณาเลือกห้องก่อน!");
-                return;
-            }
-
-            const container = document.getElementById("item-container");
-            container.innerHTML = "";
-
-            itemsByRoom[room].forEach(item => {
-                const div = document.createElement("div");
-                div.classList.add("item-option");
-                div.innerHTML = `<img src="${item.image}" alt="${item.name}"><p>${item.name}</p>`;
-                div.onclick = () => toggleItem(item);
-                container.appendChild(div);
-            });
-
-            document.getElementById("itemModal").style.display = "block";
-        }
-
-        function closeItemModal() {
-            document.getElementById("itemModal").style.display = "none";
-        }
-
-        function toggleItem(item) {
-            const index = selectedItems.findIndex(i => i.name === item.name);
-
-            if (index === -1) {
-                selectedItems.push(item);
-            } else {
-                selectedItems.splice(index, 1);
-            }
-
-            displaySelectedItems();
-        }
-
-        function removeItem(index) {
-            selectedItems.splice(index, 1);
-            displaySelectedItems();
-        }
-
-        function displaySelectedItems() {
-            const container = document.getElementById("selected-items");
-            container.innerHTML = "";
-
-            if (selectedItems.length === 0) {
-                container.innerText = "ยังไม่ได้เลือกไอเทม";
-                return;
-            }
-
-            selectedItems.forEach((item, index) => {
-                const div = document.createElement("div");
-                div.classList.add("selected-item");
-                div.innerHTML = `
-                    <img src="${item.image}" alt="${item.name}">
-                    <p>${item.name}</p>
-                    <button onclick="removeItem(${index})">❌</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-    </script>
-
-
-	<script>
-   document.getElementById("dataForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-
-    const formData = {
-        name: document.getElementById("name").value,
-        student_id: document.getElementById("student_id").value,
-        date_time_borrow: document.getElementById("date_time_borrow").value,
-        date_time_return: document.getElementById("date_time_return").value,
-        purpose: document.getElementById("purpose").value,
-        subject: document.getElementById("subject").value,
-        instructor: document.getElementById("instructor").value,
-        room: document.getElementById("room").value,
-        selected_items: selectedItems.map(item => item.name) // ส่งเฉพาะชื่อไอเทม
-    };
-
-    // แสดงหน้าโหลด
-    document.getElementById("loadingOverlay").style.display = "flex";
-
-    fetch("https://script.google.com/macros/s/AKfycbyc1kUaHGMWQ5h91D3PF-5bmN0HHZ32Z_34NTV20XXkS5uTVyiGsgeI9rk4YgSogg-SSg/exec", {  
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
-    }).then(() => {
-        alert("ส่งข้อมูลสำเร็จ!");
-        document.getElementById("dataForm").reset();
-        selectedItems = [];
-        displaySelectedItems();
-    }).catch(error => {
-        console.error("Error:", error);
-    }).finally(() => {
-        // ซ่อนหน้าโหลด ไม่ว่าจะสำเร็จหรือไม่
-        document.getElementById("loadingOverlay").style.display = "none";
-    });
-});
-
-</script>
-
-<div id="loadingOverlay" style="display: none;">
-    <div class="spinner"></div>
-    <p>กำลังส่งข้อมูล...</p>
-</div>
-
+        <!-- ลิงค์ที่ 2 -->
+        <div class="button-container button-container-2">
+            <a href="https://script.google.com/macros/s/AKfycbxz1AZ7gUSy3xrdH-hRvDUMQUrcFUK0NVzI3dNeb1P0r-aOST1bW_rM7NcrBBFopjzL/exec" target="_blank">
+                <img src="ChatGPT Image Apr 2, 2025, 10_53_02 AM.png" alt="วัสดุยืม-คืน" />
+                <div class="button-text">วัสดุยืม-คืน</div>
+            </a>
+        </div>
+    </div>
 </body>
 </html>
