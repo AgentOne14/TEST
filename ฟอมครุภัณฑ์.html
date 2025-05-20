@@ -9,84 +9,76 @@
 
         body {
             font-family: 'Sarabun', sans-serif;
-            background-color: #f8f9fa; /* Light background for a clean look */
-            color: #343a40; /* Darker text for readability */
+            background-color: #f8f9fa;
+            color: #343a40;
             text-align: center;
             padding: 40px 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 100vh; /* Ensure it takes full viewport height */
+            min-height: 100vh;
             margin: 0;
         }
 
         h1 {
-            color: #007bff; /* A vibrant blue for the main title */
+            color: #007bff;
             font-size: 2.5rem;
             font-weight: 700;
             margin-bottom: 20px;
-            text-transform: none; /* Remove uppercase for a softer look */
-            letter-spacing: -0.5px; /* Slightly tighter letter spacing */
+            text-transform: none;
+            letter-spacing: -0.5px;
         }
 
         p {
             font-size: 1.1rem;
-            color: #6c757d; /* Softer grey for description */
+            color: #6c757d;
             margin-bottom: 40px;
-            max-width: 600px; /* Limit width for better readability */
+            max-width: 600px;
         }
 
         .container {
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Align items to the start for better vertical positioning */
+            align-items: flex-start;
             flex-wrap: wrap;
-            gap: 30px; /* Increased gap for more breathing room */
+            gap: 30px;
         }
 
         .button-link {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             text-decoration: none;
             color: inherit;
-            background-color: #ffffff; /* White background for buttons */
-            border: 1px solid #e9ecef; /* Very subtle border */
-            border-radius: 12px; /* More rounded corners */
-            padding: 25px; /* Increased padding */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 280px; /* Slightly wider buttons */
+            width: 280px;
+            min-height: 220px;
         }
 
         .button-link:hover {
-            transform: translateY(-8px); /* More pronounced lift effect */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
+            transform: translateY(-8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .button-img {
-            width: 180px; /* Larger image size */
-            height: 180px; /* Larger image size */
-            object-fit: contain; /* Ensure full image is visible */
-            border-radius: 8px; /* Rounded corners for image */
-            margin-bottom: 15px; /* More space below image */
-        }
-
-        /* Keep hover image change if it's a specific design requirement */
-        .button-link:first-of-type:hover .button-img {
-            content: url('ChatGPT Image Apr 2, 2025, 10_36_02 AM.png');
-        }
-
-        .button-link:last-of-type:hover .button-img {
-            content: url('ChatGPT Image Apr 2, 2025, 10_52_47 AM.png');
+        .button-icon {
+            font-size: 4rem;
+            color: #007bff;
+            margin-bottom: 15px;
         }
 
         .button-text {
-            font-size: 1.25rem; /* Larger text for prominence */
+            font-size: 1.25rem;
             font-weight: 700;
-            color: #007bff; /* Consistent blue for text */
-            line-height: 1.4; /* Improve line spacing for readability */
+            color: #007bff;
+            line-height: 1.4;
+            text-align: center;
         }
 
         .admin-note {
@@ -105,13 +97,13 @@
                 font-size: 1rem;
             }
             .button-link {
-                width: 90%; /* Single column on tablets and mobiles */
-                max-width: 320px; /* Max width for consistency */
+                width: 90%;
+                max-width: 320px;
                 padding: 20px;
+                min-height: 200px;
             }
-            .button-img {
-                width: 150px;
-                height: 150px;
+            .button-icon {
+                font-size: 3.5rem;
             }
             .button-text {
                 font-size: 1.1rem;
@@ -123,13 +115,14 @@
             }
             .button-link {
                 padding: 15px;
+                min-height: 180px;
             }
-            .button-img {
-                width: 120px;
-                height: 120px;
+            .button-icon {
+                font-size: 3rem;
             }
         }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <h1>ระบบอนุมัติการยืม-คืน</h1>
@@ -137,14 +130,12 @@
 
     <div class="container">
         <a href="https://script.google.com/macros/s/AKfycbz7GLGT_9zTI3NHoOX_rWB8bQky_xNmz1xycdTTR2oAvbb5hdZY7hBxa9-y85AWinS5/exec" target="_blank" class="button-link">
-            <img src="ChatGPT Image Apr 2, 2025, 10_35_00 AM.png" alt="อนุมัติยืม-คืนวัสดุ" class="button-img" />
-            <div class="button-text">อนุมัติยืม-คืนวัสดุ</div>
+            <i class="fas fa-box-open button-icon"></i> <div class="button-text">อนุมัติยืม-คืนวัสดุ</div>
             <div class="admin-note">(สำหรับผู้ดูแลระบบเท่านั้น)</div>
         </a>
 
         <a href="https://script.google.com/macros/s/AKfycbyqdhtjkLKote2G0_1MEBY4yU0NbT-vrqBDJPciOO64Projp5rU3rsszBQO-bB4tBzUVw/exec" target="_blank" class="button-link">
-            <img src="ChatGPT Image Apr 2, 2025, 10_53_02 AM.png" alt="อนุมัติการยืมคืนครุภัณฑ์" class="button-img" />
-            <div class="button-text">อนุมัติการยืมคืนครุภัณฑ์</div>
+            <i class="fas fa-tools button-icon"></i> <div class="button-text">อนุมัติการยืมคืนครุภัณฑ์</div>
             <div class="admin-note">(สำหรับผู้ดูแลระบบเท่านั้น)</div>
         </a>
     </div>
