@@ -3,137 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>วัสดุยืม-คืน</title>
+    <title>ระบบอนุมัติยืม-คืน</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
         body {
             font-family: 'Sarabun', sans-serif;
-            background-color: #f0f0f0;
-            color: white;
+            background-color: #f8f9fa; /* Light background for a clean look */
+            color: #343a40; /* Darker text for readability */
             text-align: center;
-            padding: 50px;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure it takes full viewport height */
+            margin: 0;
         }
 
         h1 {
-            color: #ff5733;
+            color: #007bff; /* A vibrant blue for the main title */
             font-size: 2.5rem;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-transform: uppercase;
-            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: none; /* Remove uppercase for a softer look */
+            letter-spacing: -0.5px; /* Slightly tighter letter spacing */
         }
 
         p {
-            font-size: 1.2rem;
-            color: #333;
-            margin-bottom: 50px;
+            font-size: 1.1rem;
+            color: #6c757d; /* Softer grey for description */
+            margin-bottom: 40px;
+            max-width: 600px; /* Limit width for better readability */
         }
 
         .container {
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* Align items to the start for better vertical positioning */
             flex-wrap: wrap;
+            gap: 30px; /* Increased gap for more breathing room */
         }
 
-        .button-container {
-            display: inline-block;
-            margin: 20px;
-            text-align: center;
+        .button-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            background-color: #ffffff; /* White background for buttons */
+            border: 1px solid #e9ecef; /* Very subtle border */
+            border-radius: 12px; /* More rounded corners */
+            padding: 25px; /* Increased padding */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Softer shadow */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 280px; /* Slightly wider buttons */
         }
 
-        .button-container img {
-            width: 500px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
-            height: 500px; /* เพิ่มขนาดให้ใหญ่ขึ้น */
-            object-fit: cover; /* ปรับให้รูปเต็มพื้นที่ */
-            border-radius: 10px;
-            transition: transform 0.2s ease, opacity 0.3s ease;
+        .button-link:hover {
+            transform: translateY(-8px); /* More pronounced lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
         }
 
-        /* เมื่อเมาส์ชี้ที่รูปภาพ ให้เปลี่ยนภาพ */
-        .button-container:hover img {
-            content: url('ChatGPT Image Apr 2, 2025, 10_36_02 AM.png'); /* เปลี่ยนเป็นภาพที่ต้องการ */
-            transform: scale(1.1);
+        .button-img {
+            width: 180px; /* Larger image size */
+            height: 180px; /* Larger image size */
+            object-fit: contain; /* Ensure full image is visible */
+            border-radius: 8px; /* Rounded corners for image */
+            margin-bottom: 15px; /* More space below image */
         }
 
-        .button-container-2:hover img {
-            content: url('ChatGPT Image Apr 2, 2025, 10_52_47 AM.png'); /* เปลี่ยนเป็นภาพที่ต้องการ */
-            transform: scale(1.1);
+        /* Keep hover image change if it's a specific design requirement */
+        .button-link:first-of-type:hover .button-img {
+            content: url('ChatGPT Image Apr 2, 2025, 10_36_02 AM.png');
+        }
+
+        .button-link:last-of-type:hover .button-img {
+            content: url('ChatGPT Image Apr 2, 2025, 10_52_47 AM.png');
         }
 
         .button-text {
-            margin-top: 10px;
-            font-size: 3rem;
-            color: #333;
-            text-transform: uppercase;
+            font-size: 1.25rem; /* Larger text for prominence */
+            font-weight: 700;
+            color: #007bff; /* Consistent blue for text */
+            line-height: 1.4; /* Improve line spacing for readability */
         }
 
-        .message-box {
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+        .admin-note {
+            font-size: 0.9rem;
+            color: #888;
+            margin-top: 5px;
+            font-weight: 400;
         }
 
-        /* Media Query สำหรับมือถือ */
+        /* Media Queries for responsiveness */
         @media (max-width: 768px) {
             h1 {
-                font-size: 2rem; /* ลดขนาดตัวอักษรหัวข้อ */
+                font-size: 2rem;
             }
-
             p {
-                font-size: 1rem; /* ลดขนาดข้อความ */
+                font-size: 1rem;
             }
-
-            .button-container {
-                width: 80%; /* ทำให้ปุ่มมีขนาดเล็กลงในมือถือ */
-                max-width: 200px;
+            .button-link {
+                width: 90%; /* Single column on tablets and mobiles */
+                max-width: 320px; /* Max width for consistency */
+                padding: 20px;
             }
-
-            .button-container img {
-                width: 100%; /* ให้ภาพขยายเต็มพื้นที่ */
-                height: auto;
+            .button-img {
+                width: 150px;
+                height: 150px;
+            }
+            .button-text {
+                font-size: 1.1rem;
             }
         }
-
         @media (max-width: 480px) {
             h1 {
-                font-size: 1.5rem; /* ลดขนาดตัวอักษรหัวข้อให้เล็กลงสำหรับมือถือขนาดเล็ก */
+                font-size: 1.8rem;
             }
-
-            p {
-                font-size: 0.9rem; /* ลดขนาดข้อความ */
+            .button-link {
+                padding: 15px;
             }
-
-            .button-container {
-                width: 90%; /* ปรับให้ปุ่มเต็มความกว้างของหน้าจอ */
-                max-width: 180px;
+            .button-img {
+                width: 120px;
+                height: 120px;
             }
         }
-
     </style>
 </head>
 <body>
-    <div class="message-box">
-        <h1>ระบบอุมัตืการยืม-คืน</h1>
-        <p>คลิกที่รูปภาพด้านล่างเพื่อไปที่ลิงค์ต่างๆ:</p>
-    </div>
+    <h1>ระบบอนุมัติการยืม-คืน</h1>
+    <p>เลือกประเภทการอนุมัติที่คุณต้องการดำเนินการเพื่อจัดการคำขอจากผู้ใช้งาน</p>
 
     <div class="container">
-        <!-- ลิงค์ที่ 1 -->
-        <div class="button-container">
-            <a href="https://script.google.com/macros/s/AKfycbz7GLGT_9zTI3NHoOX_rWB8bQky_xNmz1xycdTTR2oAvbb5hdZY7hBxa9-y85AWinS5/exec" target="_blank">
-                <img src="ChatGPT Image Apr 2, 2025, 10_35_00 AM.png" alt="วัสดุสิ้นเปลือง" />
-                <div class="button-text">อนุมัติยืม-คืนวัสดุ(Admin Only)</div>
-            </a>
-        </div>
+        <a href="https://script.google.com/macros/s/AKfycbz7GLGT_9zTI3NHoOX_rWB8bQky_xNmz1xycdTTR2oAvbb5hdZY7hBxa9-y85AWinS5/exec" target="_blank" class="button-link">
+            <img src="ChatGPT Image Apr 2, 2025, 10_35_00 AM.png" alt="อนุมัติยืม-คืนวัสดุ" class="button-img" />
+            <div class="button-text">อนุมัติยืม-คืนวัสดุ</div>
+            <div class="admin-note">(สำหรับผู้ดูแลระบบเท่านั้น)</div>
+        </a>
 
-        <!-- ลิงค์ที่ 2 -->
-        <div class="button-container button-container-2">
-            <a href="https://script.google.com/macros/s/AKfycbyqdhtjkLKote2G0_1MEBY4yU0NbT-vrqBDJPciOO64Projp5rU3rsszBQO-bB4tBzUVw/exec" target="_blank">
-                <img src="ChatGPT Image Apr 2, 2025, 10_53_02 AM.png" alt="วัสดุยืม-คืน" />
-                <div class="button-text">อนุมัติการยืมคืนครุภัณฑ์(Admin Only)</div>
-            </a>
-        </div>
+        <a href="https://script.google.com/macros/s/AKfycbyqdhtjkLKote2G0_1MEBY4yU0NbT-vrqBDJPciOO64Projp5rU3rsszBQO-bB4tBzUVw/exec" target="_blank" class="button-link">
+            <img src="ChatGPT Image Apr 2, 2025, 10_53_02 AM.png" alt="อนุมัติการยืมคืนครุภัณฑ์" class="button-img" />
+            <div class="button-text">อนุมัติการยืมคืนครุภัณฑ์</div>
+            <div class="admin-note">(สำหรับผู้ดูแลระบบเท่านั้น)</div>
+        </a>
     </div>
 </body>
 </html>
