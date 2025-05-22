@@ -3,38 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เข้าสู่ระบบ</title>
+    <title>เข้าสู่ระบบ - วิทยาศาสตร์การกีฬาและสุขภาพ</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; padding: 20px; }
-        .login-box { max-width: 350px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; }
-        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; border-radius: 5px; font-size: 16px; }
-        button:hover { background: #0056b3; }
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap');
+
+        body {
+            font-family: "Kanit", sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            color: #0056b3;
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .input-group input {
+            width: calc(100% - 20px);
+            padding: 12px 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: "Kanit", sans-serif;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            color: #d9534f;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            display: none; /* Hidden by default */
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.6rem;
+            }
+            .login-container {
+                padding: 30px;
+            }
+            .input-group input, button {
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <div class="login-box">
-        <h2>🔐 เข้าสู่ระบบ</h2>
-        <input type="text" id="username" placeholder="ชื่อผู้ใช้" required>
-        <input type="password" id="password" placeholder="รหัสผ่าน" required>
-        <button onclick="login()">✅ เข้าสู่ระบบ</button>
+    <div class="login-container">
+        <h1>เข้าสู่ระบบ<br>ระบบจัดการวิทยาศาสตร์การกีฬาและสุขภาพ</h1>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">ชื่อผู้ใช้:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="input-group">
+                <label for="password">รหัสผ่าน:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button type="submit">เข้าสู่ระบบ</button>
+            <p class="error-message" id="errorMessage">ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง</p>
+        </form>
     </div>
 
     <script>
-        function login() {
-            let username = document.getElementById("username").value.trim();
-            let password = document.getElementById("password").value.trim();
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
 
-            if (username === "wanchaloem" && password === "1234") {  // 🔹 ตั้งค่า User/Pass เริ่มต้น
-                localStorage.setItem("isLoggedIn", "true");  // 🔹 บันทึกสถานะล็อกอิน
-                alert("✅ เข้าสู่ระบบสำเร็จ!");
-                window.location.href = "booking.html";  // 🔹 กลับไปที่หน้าหลัก
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // In a real application, you would send this data to Google Apps Script
+            // for verification against your Google Sheet.
+            // For demonstration, let's use a hardcoded example:
+            if (username === 'admin' && password === '1234') {
+                errorMessage.style.display = 'none';
+                alert('เข้าสู่ระบบสำเร็จ! (ในเวอร์ชันจริงจะเปลี่ยนเส้นทาง)');
+                // Redirect to your main application page
+                window.location.href = 'ฟอมครุภัณฑ์.html'; // **IMPORTANT: Change this to your actual page URL**
             } else {
-                alert("❌ ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง!");
+                errorMessage.style.display = 'block'; // Show error message
             }
-        }
+        });
     </script>
-
 </body>
 </html>
